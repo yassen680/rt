@@ -742,7 +742,7 @@ sub Encrypt {
     $self->SetHeader( 'Content-Type' => $type );
 
     my $content = $self->Content;
-    my %res = RT::Crypt::GnuPG::SignEncryptContent(
+    my %res = RT::Crypt->SignEncryptContent(
         Content => \$content,
         Sign => 0,
         Encrypt => 1,
