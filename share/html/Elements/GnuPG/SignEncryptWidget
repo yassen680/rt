@@ -134,7 +134,7 @@ if ( $self->{'Sign'} ) {
         ? ( $QueueObj->CommentAddress || RT->Config->Get('CommentAddress') )
         : ( $QueueObj->CorrespondAddress || RT->Config->Get('CorrespondAddress') );
 
-    unless ( RT::Crypt::GnuPG::DrySign( $address ) ) {
+    unless ( RT::Crypt::GnuPG->DrySign( $address ) ) {
         push @{ $self->{'GnuPGCanNotSignAs'} ||= [] }, $address;
         $checks_failure = 1;
     } else {
