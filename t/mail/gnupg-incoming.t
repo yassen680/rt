@@ -20,6 +20,7 @@ use RT::Test::GnuPG
 use String::ShellQuote 'shell_quote';
 use IPC::Run3 'run3';
 
+RT->Config->Set( 'MailPlugins' => 'Auth::MailFrom', 'Auth::Crypt' );
 my ($baseurl, $m) = RT::Test->started_ok;
 
 # configure key for General queue
