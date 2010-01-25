@@ -79,7 +79,7 @@ $Update     => undef
 <%INIT>
 return unless RT->Config->Get('GnuPG')->{'Enable'};
 
-require RT::Crypt::GnuPG;
+require RT::Crypt;
 
 my @results;
 
@@ -91,7 +91,7 @@ unless ( $UserObj->id ) {
 $id = $ARGS{'id'} = $UserObj->id;
 
 my $email = $UserObj->EmailAddress;
-my %keys_meta = RT::Crypt::GnuPG::GetKeysForSigning( $email, 'force' );
+my %keys_meta = RT::Crypt->GetKeysForSigning( $email, Force => 1 );
 
 $ARGS{'PrivateKey'} = $m->comp('/Widgets/Form/Select:Process',
     Name      => 'PrivateKey',
