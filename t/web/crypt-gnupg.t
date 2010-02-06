@@ -99,7 +99,7 @@ MAIL
     my ($msg, @attachments) = @{$txn->Attachments->ItemsArrayRef};
 
     is( $msg->GetHeader('X-RT-Privacy'),
-        'PGP',
+        'GnuPG',
         "RT's outgoing mail has crypto"
     );
     is( $msg->GetHeader('X-RT-Incoming-Encryption'),
@@ -167,7 +167,7 @@ MAIL
     my ($msg, @attachments) = @{$txn->Attachments->ItemsArrayRef};
 
     is( $msg->GetHeader('X-RT-Privacy'),
-        'PGP',
+        'GnuPG',
         "RT's outgoing mail has crypto"
     );
     is( $msg->GetHeader('X-RT-Incoming-Encryption'),
@@ -239,7 +239,7 @@ MAIL
     my ($msg, @attachments) = @{$txn->Attachments->ItemsArrayRef};
 
     is( $msg->GetHeader('X-RT-Privacy'),
-        'PGP',
+        'GnuPG',
         "RT's outgoing mail has crypto"
     );
     is( $msg->GetHeader('X-RT-Incoming-Encryption'),
@@ -305,7 +305,7 @@ MAIL
     my ($msg, @attachments) = @{$txn->Attachments->ItemsArrayRef};
 
     is( $msg->GetHeader('X-RT-Privacy'),
-        'PGP',
+        'GnuPG',
         "RT's outgoing mail has crypto"
     );
     is( $msg->GetHeader('X-RT-Incoming-Encryption'),
