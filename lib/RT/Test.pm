@@ -304,9 +304,6 @@ sub bootstrap_config {
     my $self = shift;
     my %args = @_;
 
-    $tmp{'config'}{'RT'} = File::Spec->catfile(
-        "$tmp{'directory'}", 'RT_SiteConfig.pm'
-    );
     my $config = $self->new_temp_file( config => RT => 'RT_SiteConfig.pm' );
     open( my $config_fh, '>', $config )
         or die "Couldn't open $config: $!";
@@ -318,6 +315,8 @@ Set( \$WebPort,   $port);
 Set( \$WebPath,   "");
 Set( \@LexiconLanguages, qw(en zh_TW zh_CN fr ja));
 Set( \$RTAddressRegexp , qr/^bad_re_that_doesnt_match\$/i);
+Set( \$LogDir,     '$tmp{directory}');
+Set( \$LogToFile , "debug");
 };
     if ( $ENV{'RT_TEST_DB_SID'} ) { # oracle case
         print $config_fh "Set( \$DatabaseName , '$ENV{'RT_TEST_DB_SID'}' );\n";
