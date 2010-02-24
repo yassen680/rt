@@ -309,7 +309,7 @@ AC_SUBST(RT_GPG)
 
 dnl RT's SMIME support
 AC_CHECK_PROG([RT_SMIME], [openssl], "yes", "no")
-AC_ARG_ENABLE(gpg,
+AC_ARG_ENABLE(smime,
             AC_HELP_STRING([--enable-smime],
                            [Turns on Secure MIME (SMIME) support]),
             RT_SMIME=$enableval)
