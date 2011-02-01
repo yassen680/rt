@@ -45,73 +45,77 @@
 %# those contributions and any derivatives thereof.
 %#
 %# END BPS TAGGED BLOCK }}}
-<table border="0" cellspacing="0" cellpadding="1" width="100%" class="queue-summary">
-
-<%perl>
-my $i = 0;
-
-foreach my $group ( map $groups{$_}, sort keys %groups ) {
-    my @statuses = @{ $group->{'statuses'} };
-</%perl>
-
-<tr>
-    <th class="collection-as-table"><&|/l&>Queue</&></th>
-% for my $status ( @statuses ) {
-    <th class="collection-as-table"><% loc($status) %></th>
-% }
-% for ( 1 .. ($max - @statuses) ) {
-    <th class="collection-as-table">&nbsp;</th>
-% }
-</tr>
-
-<%PERL>
-for my $queue (@{ $group->{'queues'} }) {
-    $i++;
-    my $name = RT::SQL->Quote( $queue->Name );
-    my $queue_cond = "Queue = $name AND ";
-    my $all_q = $queue_cond . '(' . join( " OR ", map "Status = $_", map RT::SQL->Quote($_), @statuses ) . ')';
-</%PERL>
-<tr class="<% $i%2 ? 'oddline' : 'evenline'%>" >
-
-<td>
-    <a href="<% RT->Config->Get('WebPath') %>/Search/Results.html?Query=<% $all_q |u,n %>" title="<% $queue->Description %>"><% $queue->Name %></a>
-</td>
-
-%   for my $status (@statuses) {
-<td align="right">
-    <a href="<% RT->Config->Get('WebPath') %>/Search/Results.html?Query=<% $queue_cond ."Status = ". RT::SQL->Quote($status) |u,n %>"><% $data->{ $queue->id }->{ $status } || '0' %></a>
-</td>
-%   }
-</tr>
-% }
-</table>
-% }
 <%INIT>
-return unless @queues && @statuses;
+$queues ||= RT::Queues->new( $session{'CurrentUser'} );
+$queues->UnLimit unless $queues->_isLimited;
 
-my $max = 0;
+$m->callback( CallbackName => 'SQLFilter', Queues => $queues );
 
-my %groups;
-foreach my $queue ( @queues ) {
-    my $cycle = $queue->Lifecycle;
-    my $cycle_name = $cycle->Name;
-    if ( $groups{ $cycle_name } ) {
-        push @{ $groups{ $cycle_name }{'queues'} }, $queue;
-        next;
-    }
+my @queues = $queue_filter
+    ? grep $queue_filter->($_), @{ $queues->ItemsArrayRef }
+    : @{ $queues->ItemsArrayRef }
+;
+$m->callback( CallbackName => 'Filter', Queues => \@queues );
 
-    $groups{ $cycle_name } = {
-        cycle => $cycle,
-        statuses => [ grep $cycle->IsValid( $_), @statuses ],
-        queues => [$queue],
-    };
-    $max = @{ $groups{ $cycle_name }{'statuses'} }
-        if $max < @{ $groups{ $cycle_name }{'statuses'} };
+$preference = $preference
+    ? $session{'CurrentUser'}->UserObj->Preferences($preference, {})
+    : {}
+;
+
+my $comp = '/Elements/QueueSummaryByStatus';
+if ( $preference->{'SplitByLifecycle'} ) {
+    $comp = '/Elements/QueueSummaryByLifecycle';
+}
+if ( $preference->{'Unwanted'} && keys %{ $preference->{'Unwanted'} } ) {
+    @queues = grep !$preference->{'Unwanted'}{ $_->Name }, @queues;
 }
 
+return $m->comp( $comp ) unless @queues;
+
+my %lifecycle = map { lc $_->Name => $_ } map $_->Lifecycle, @queues;
+
+unless (@statuses) {
+    my %seen;
+    foreach my $set ( 'initial', 'active' ) {
+        foreach my $lifecycle ( map $lifecycle{$_}, sort keys %lifecycle ) {
+            push @statuses, grep !$seen{ lc $_ }++, $lifecycle->Valid($set);
+        }
+    }
+}
+
+use RT::Report::Tickets;
+my $report = RT::Report::Tickets->new( RT->SystemUser );
+my $query =
+    '('. join(" OR ", map "Status = $_", map RT::SQL->Quote($_), @statuses) .')'
+    .' AND ('. join(' OR ', map "Queue = ". $_->id, @queues) .')';
+$report->SetupGroupings( Query => $query, GroupBy => [qw(Status Queue)] );
+
+my (%data, %data_has_status);
+while ( my $entry = $report->Next ) {
+    my ($queue, $status, $count) = map $entry->__Value($_), qw(Queue Status id);
+
+    $data{ $queue }{ $status } = $count;
+    $data{ $queue }{''} += $count;
+    $data_has_status{ $status } = 1;
+}
+
+unless ( $preference->{'ShowEmptyColumns'} ) {
+    @statuses = grep $data_has_status{$_}, @statuses;
+}
+unless ( $preference->{'ShowEmptyRows'} ) {
+    @queues = grep $data{ $_->id }{''}, @queues;
+}
+
+return $m->comp(
+    $comp,
+    queues   => \@queues,
+    statuses => \@statuses,
+    data     => \%data,
+);
 </%INIT>
 <%ARGS>
-@queues          => ()
-@statuses        => ()
-$data            => {}
+$queues => undef
+$queue_filter => undef
+$preference => undef,
+@statuses => ()
 </%ARGS>
