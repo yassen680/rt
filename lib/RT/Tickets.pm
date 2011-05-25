@@ -527,7 +527,7 @@ Meta Data:
 =cut
 
 sub _DateLimit {
-    my ( $sb, $field, $op, $value, @rest ) = @_;
+    my ( $sb, $field, $op, $value, %rest ) = @_;
 
     die "Invalid Date Op: $op"
         unless $op =~ /^(=|>|<|>=|<=)$/;
@@ -535,6 +535,28 @@ sub _DateLimit {
     my $meta = $FIELD_METADATA{$field};
     die "Incorrect Meta Data for $field"
         unless ( defined $meta->[1] );
+
+    if ( my $subkey = $rest{SUBKEY} ) {
+        my $tz;
+        if ( RT->Config->Get('ChartsTimezonesInDB') ) {
+            my $to = $sb->CurrentUser->UserObj->Timezone
+                || RT->Config->Get('Timezone');
+            $tz = { From => 'UTC', To => $to }
+                if $to && lc $to ne 'utc';
+        }
+        my $function = $RT::Handle->DateTimeFunction(
+            Type     => $subkey,
+            Field    => '?',
+            Timezone => $tz,
+        );
+        return $sb->_SQLLimit(
+            FUNCTION => $function,
+            FIELD    => $meta->[1],
+            OPERATOR => $op,
+            VALUE    => $value,
+            %rest,
+        );
+    }
 
     my $date = RT::Date->new( $sb->CurrentUser );
     $date->Set( Format => 'unknown', Value => $value );
@@ -556,14 +578,14 @@ sub _DateLimit {
             FIELD    => $meta->[1],
             OPERATOR => ">=",
             VALUE    => $daystart,
-            @rest,
+            %rest,
         );
 
         $sb->Limit(
             FIELD    => $meta->[1],
             OPERATOR => "<",
             VALUE    => $dayend,
-            @rest,
+            %rest,
             ENTRYAGGREGATOR => 'AND',
         );
 
@@ -575,7 +597,7 @@ sub _DateLimit {
             FIELD    => $meta->[1],
             OPERATOR => $op,
             VALUE    => $date->ISO,
-            @rest,
+            %rest,
         );
     }
 }
