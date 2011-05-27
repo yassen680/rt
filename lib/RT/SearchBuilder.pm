@@ -269,10 +269,7 @@ sub Limit {
         $ARGS{'VALUE'} = 'NULL';
     }
 
-    if ($ARGS{FUNCTION}) {
-        ($ARGS{ALIAS}, $ARGS{FIELD}) = split /\./, delete $ARGS{FUNCTION}, 2;
-        $self->SUPER::Limit(%ARGS);
-    } elsif ($ARGS{FIELD} =~ /\W/
+    if ($ARGS{FIELD} =~ /\W/
           or $ARGS{OPERATOR} !~ /^(=|<|>|!=|<>|<=|>=
                                   |(NOT\s*)?LIKE
                                   |(NOT\s*)?(STARTS|ENDS)WITH
