@@ -237,7 +237,7 @@ sub SetupGroupings {
         my ($key, $subkey) = split /\./, $e, 2;
         $e = { $self->_FieldToFunction( KEY => $key, SUBKEY => $subkey ) };
         $e->{'TYPE'} = $GROUPINGS{ $key };
-        $e->{'META'} = $GROUPINGS{ $e->{'TYPE'} };
+        $e->{'META'} = $GROUPINGS_META{ $e->{'TYPE'} };
     }
     $self->GroupBy( @group_by );
 
