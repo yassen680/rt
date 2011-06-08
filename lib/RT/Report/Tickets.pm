@@ -82,7 +82,7 @@ our %GROUPINGS;
 
 our %GROUPINGS_META = (
     Queue => {
-        Display => {
+        Display => sub {
             my $self = shift;
             my %args = (@_);
 
