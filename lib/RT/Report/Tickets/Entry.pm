@@ -98,7 +98,7 @@ sub LabelValue {
         return $raw;
     }
 
-    return $code->( $self, %$meta, VALUE => $raw );
+    return $code->( $self, %$info, VALUE => $raw );
 }
 
 sub RawValue {
