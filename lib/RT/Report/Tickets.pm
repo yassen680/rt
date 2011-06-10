@@ -433,6 +433,24 @@ sub _FieldToFunction {
     return $code->( $self, %args );
 }
 
+sub _StatsToFunction {
+    my $self = shift;
+    my ($stat) = (@_);
+
+    %STATISTICS = @STATISTICS unless keys %STATISTICS;
+
+    my ($display, $type, @args) = @{ $STATISTICS{ $stat } || [] };
+    unless ( $type ) {
+        $RT::Logger->error("'$stat' is not valid statistics for report");
+        return ('FUNCTION' => 'NULL');
+    }
+
+    my $meta = $STATISTICS_META{ $type };
+    return ('FUNCTION' => 'NULL') unless $meta;
+    return ('FUNCTION' => 'NULL') unless $meta->{'Function'};
+    return $meta->{'Function'}->( $self, @args );
+}
+
 
 # Override the AddRecord from DBI::SearchBuilder::Unique. id isn't id here
 # wedon't want to disambiguate all the items with a count of 1.
