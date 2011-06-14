@@ -88,20 +88,8 @@ sub LabelValue {
     my $meta = $info->{'META'};
     return $raw unless $meta && $meta->{'Display'};
 
-    my $code;
-    unless ( ref $meta->{'Display'} ) {
-        $code = $self->can( $meta->{'Display'} );
-        unless ( $code ) {
-            $RT::Logger->error("No method ". $meta->{'Display'} );
-            return $raw;
-        }
-    }
-    elsif ( ref( $meta->{'Display'} ) eq 'CODE' ) {
-        $code = $meta->{'Display'};
-    }
-    else {
-        return $raw;
-    }
+    my $code = $self->FindImplementationCode( $meta->{'Display'} );
+    return $raw unless $code;
 
     return $code->( $self, %$info, VALUE => $raw );
 }
@@ -146,33 +134,7 @@ sub Query {
 }
 
 sub FindImplementationCode {
-    my $self = shift;
-    my $value = shift;
-    my $silent = shift;
-
-    my $code;
-    unless ( $value ) {
-        $RT::Logger->error("Value is not defined. Should be method name or code reference")
-            unless $silent;
-        return undef;
-    }
-    elsif ( !ref $value ) {
-        $code = $self->can( $value );
-        unless ( $code ) {
-            $RT::Logger->error("No method $value in ". (ref $self || $self) ." class" )
-                unless $silent;
-            return undef;
-        }
-    }
-    elsif ( ref( $value ) eq 'CODE' ) {
-        $code = $value;
-    }
-    else {
-        $RT::Logger->error("$value is not method name or code reference")
-            unless $silent;
-        return undef;
-    }
-    return $code;
+    return RT::Report::Tickets->can('FindImplementationCode')->(@_);
 }
 
 RT::Base->_ImportOverlays();
