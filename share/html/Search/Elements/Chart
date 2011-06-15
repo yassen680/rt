@@ -94,7 +94,7 @@ my $query_string = $m->comp('/Elements/QueryString', %ARGS);
 
 % my ($i,$total) = (0, 0);
 % while ( my $entry = $tix->Next ) {
-<tr class="<% $i%2 ? 'evenline' : 'oddline' %>">
+<tr class="<% ++$i%2 ? 'evenline' : 'oddline' %>">
 
 <td class="label collection-as-table">
 % my $key = $entry->LabelValue( $value_name ) || loc('(no value)');
