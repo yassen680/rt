@@ -123,7 +123,7 @@ sub Query {
             my $op = '=';
             if ( defined $value ) {
                 unless ( $value =~ /^\d+$/ ) {
-                    $value =~ s/(['\\])/\\$1/g;
+                    $value =~ s/'/\\'/g;
                     $value = "'$value'";
                 }
             }
