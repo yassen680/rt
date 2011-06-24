@@ -175,6 +175,7 @@ our %GROUPINGS_META = (
             }
             return @res;
         },
+        Function => 'GenerateCustomFieldFunction',
         Label => sub {
             my $self = shift;
             my %args = (@_);
