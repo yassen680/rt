@@ -745,6 +745,72 @@ sub Deserialize {
     }
 }
 
+
+sub FormatTable {
+    my $self = shift;
+    my %columns = @_;
+
+    my @head = ({ cells => []});
+    foreach my $column ( @{ $columns{'Groups'} }, @{ $columns{'Functions'} } ) {
+        push @{ $head[0]{'cells'} }, { type => 'head', value => $self->Label($column) };
+    }
+
+    my %total;
+
+    my @body;
+    my $i = 0;
+    my @groups_stack = ();
+    while ( my $entry = $self->Next ) {
+        my %row = (
+            even => ++$i%2,
+            cells => [],
+        );
+        foreach my $column ( @{ $columns{'Groups'} } ) {
+            push @{ $row{'cells'} }, { type => 'label', value => $entry->LabelValue( $column ) };
+        }
+
+        my $entry_query = $entry->Query;
+        
+        foreach my $column ( @{ $columns{'Functions'} } ) {
+            my $raw = $entry->RawValue( $column );
+            $total{ $column } += $raw if defined $raw && length $raw;
+
+            my $value = $entry->LabelValue( $column );
+            push @{ $row{'cells'} }, { type => 'value', value => $value, query => $entry_query };
+        }
+        push @body, \%row;
+    }
+
+    my @footer;
+    {
+        my %row = (
+            even => ++$i%2,
+            cells => [],
+        );
+        push @{ $row{'cells'} }, {
+            type => 'label',
+            value => $self->loc('Total'),
+            colspan => scalar @{ $columns{'Groups'} }
+        };
+        foreach my $column ( @{ $columns{'Functions'} } ) {
+            my %cell = ( type => 'value' );
+            if ( !$total{ $column } ) {
+                $cell{'value'} = undef;
+            }
+            elsif ( my $code = $self->LabelValueCode( $column ) ) {
+                my $info = $self->ColumnInfo( $column );
+                $cell{'value'} = $code->( $self, %$info, VALUE => $total{ $column } );
+            } else {
+                $cell{'value'} = $total{ $column };
+            }
+            push @{ $row{'cells'} }, \%cell;
+        }
+        push @footer, \%row;
+    }
+
+    return thead => \@head, tbody => \@body, tfoot => \@footer;
+}
+
 RT::Base->_ImportOverlays();
 
 1;

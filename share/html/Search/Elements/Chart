@@ -84,14 +84,6 @@ my $query_string = $m->comp('/Elements/QueryString', %ARGS, GroupBy => \@GroupBy
 <img src="<% RT->Config->Get('WebPath') %>/Search/Chart?Cache=<% $key |un %>&<% $query_string |n %>" />
 % }
 </span>
-<table class="collection-as-table chart">
-
-<tr>
-% foreach my $column ( @{ $columns{'Groups'} }, @{ $columns{'Functions'} } ) {
-<th class="collection-as-table"><% $report->Label( $column ) %></th>
-% }
-</tr>
-
 % my $base_query = $m->comp('/Elements/QueryString',
 %     Format  => $ARGS{Format},
 %     Rows    => $ARGS{Rows},
@@ -99,47 +91,43 @@ my $query_string = $m->comp('/Elements/QueryString', %ARGS, GroupBy => \@GroupBy
 %     Order   => $ARGS{Order},
 % );
 
-% my $i = 0;
-% my %total = map { $_ => 0 } @{ $columns{Functions} };
-% while ( my $entry = $report->Next ) {
-<tr class="<% ++$i%2 ? 'evenline' : 'oddline' %>">
+% my %table = $report->FormatTable( %columns );
+<table class="collection-as-table chart">
+% foreach my $section (qw(thead tbody tfoot)) {
+% next unless $table{ $section } && @{ $table{ $section } };
+<<% $section %>>
+% foreach my $row ( @{ $table{ $section } } ) {
 
-% foreach my $column ( @{ $columns{'Groups'} } ) {
-<td class="label collection-as-table"><% $entry->LabelValue( $column ) %></td>
+<tr \
+  class="<% defined $row->{'even'}?  $row->{'even'}? 'evenline' : 'oddline' : '' %>" \
+>
+% foreach my $cell ( @{ $row->{'cells'} } ) {
+% my @class = ('collection-as-table');
+% push @class, ($cell->{'type'}) unless $cell->{'type'} eq 'head';
+% my $tag = $cell->{'type'} eq 'value'? 'td' : 'th';
+<<% $tag %> class="<% join ' ', @class %>" \
+% if ( $cell->{'colspan'} ) {
+colspan="<% int $cell->{'colspan'} %>" \
 % }
-
-% my $entry_query = $entry->Query;
-
-% foreach my $column ( @{ $columns{'Functions'} } ) {
-<td class="value collection-as-table">
-% $total{ $column } += $entry->RawValue( $column );
-% my $value = $entry->LabelValue( $column );
-% if ( $entry_query ) {
-<a href="<% RT->Config->Get('WebPath') %>/Search/Results.html?Query=<% "$Query AND $entry_query" |un %>&<% $base_query %>"><% $value %></a>
+% if ( $cell->{'rowspan'} ) {
+rowspan="<% int $cell->{'rowspan'} %>" \
+% }
+>\
+% if ( defined $cell->{'value'} ) {
+% if ( my $q = $cell->{'query'} ) {
+<a href="<% RT->Config->Get('WebPath') %>/Search/Results.html?Query=<% "$Query AND $q" |un %>&<% $base_query %>"><% $cell->{'value'} %></a>\
 % } else {
-<% $value %>
+<% $cell->{'value'} %>\
 % }
-</td>
+% } else {
+&nbsp;\
 % }
-
+</<% $tag %>>
+% }
 </tr>
 % }
-
-% $i++;
-<tr class="<% $i%2 ? 'evenline' : 'oddline' %> total">
-<td class="label collection-as-table" colspan="<% scalar @{ $columns{'Groups'} } %>"><% loc('Total') %></td>
-% foreach my $column ( @{ $columns{'Functions'} } ) {
-% if ( !$total{ $column } ) {
-<td class="value collection-as-table">&nbsp;</td>
-% } elsif ( my $code = $report->LabelValueCode( $column ) ) {
-% my $info = $report->ColumnInfo( $column );
-<td class="value collection-as-table"><% $code->( $report, %$info, VALUE => $total{ $column } ) %></td>
-% } else {
-<td class="value collection-as-table"><% $total{ $column } %></td>
+</<% $section %>>
 % }
-% }
-</tr>
-
 </table>
 <div class="query"><span class="label"><% loc('Query') %>:</span><span class="value"><% $Query %></span></div>
 </div>
