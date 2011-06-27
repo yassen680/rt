@@ -783,20 +783,19 @@ sub FormatTable {
     my $self = shift;
     my %columns = @_;
 
-    my @head = ({ cells => []});
+    my (@head, @body, @footer);
+
+    @head = ({ cells => []});
     foreach my $column ( @{ $columns{'Groups'} }, @{ $columns{'Functions'} } ) {
         push @{ $head[0]{'cells'} }, { type => 'head', value => $self->Label($column) };
     }
-
-    my %total;
-
-    my @body;
 
     my $i = 0;
     while ( my $entry = $self->Next ) {
         $body[ $i ] = { even => ($i+1)%2, cells => [] };
         $i++;
     }
+    @footer = ({ even => ++$i%2, cells => []});
 
     foreach my $column ( @{ $columns{'Groups'} } ) {
         $i = 0;
@@ -807,12 +806,18 @@ sub FormatTable {
             };
         }
     }
+    push @{ $footer[0]{'cells'} }, {
+        type => 'label',
+        value => $self->loc('Total'),
+        colspan => scalar @{ $columns{'Groups'} },
+    };
 
     foreach my $column ( @{ $columns{'Functions'} } ) {
         $i = 0;
+        my $total;
         while ( my $entry = $self->Next ) {
             my $raw = $entry->RawValue( $column );
-            $total{ $column } += $raw if defined $raw && length $raw;
+            $total += $raw if defined $raw && length $raw;
 
             my $value = $entry->LabelValue( $column );
             push @{ $body[ $i++ ]{'cells'} }, {
@@ -821,33 +826,11 @@ sub FormatTable {
                 query => $entry->Query,
             };
         }
-    }
-
-    my @footer;
-    {
-        my %row = (
-            even => ++$i%2,
-            cells => [],
-        );
-        push @{ $row{'cells'} }, {
-            type => 'label',
-            value => $self->loc('Total'),
-            colspan => scalar @{ $columns{'Groups'} }
-        };
-        foreach my $column ( @{ $columns{'Functions'} } ) {
-            my %cell = ( type => 'value' );
-            if ( !$total{ $column } ) {
-                $cell{'value'} = undef;
-            }
-            elsif ( my $code = $self->LabelValueCode( $column ) ) {
-                my $info = $self->ColumnInfo( $column );
-                $cell{'value'} = $code->( $self, %$info, VALUE => $total{ $column } );
-            } else {
-                $cell{'value'} = $total{ $column };
-            }
-            push @{ $row{'cells'} }, \%cell;
+        if ( $total and my $code = $self->LabelValueCode( $column ) ) {
+            my $info = $self->ColumnInfo( $column );
+            $total = $code->( $self, %$info, VALUE => $total );
         }
-        push @footer, \%row;
+        push @{ $footer[0]{'cells'} }, { type => 'value', value => $total };
     }
 
     return thead => \@head, tbody => \@body, tfoot => \@footer;
