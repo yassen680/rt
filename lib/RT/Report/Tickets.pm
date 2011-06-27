@@ -267,7 +267,7 @@ our %STATISTICS_META = (
             my %args = @_;
             my $v = $args{'VALUE'};
             return $self->loc("(no value)") unless defined $v && length $v;
-            return RT::Date->new( $self->CurrentUser )->DurationAsString( $v );
+            return RT::Date->new( $self->CurrentUser )->DurationAsString( $v*60 );
         },
     },
     DateTimeInterval => {
