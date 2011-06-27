@@ -791,27 +791,36 @@ sub FormatTable {
     my %total;
 
     my @body;
-    my $i = 0;
-    my @groups_stack = ();
-    while ( my $entry = $self->Next ) {
-        my %row = (
-            even => ++$i%2,
-            cells => [],
-        );
-        foreach my $column ( @{ $columns{'Groups'} } ) {
-            push @{ $row{'cells'} }, { type => 'label', value => $entry->LabelValue( $column ) };
-        }
 
-        my $entry_query = $entry->Query;
-        
-        foreach my $column ( @{ $columns{'Functions'} } ) {
+    my $i = 0;
+    while ( my $entry = $self->Next ) {
+        $body[ $i ] = { even => ($i+1)%2, cells => [] };
+        $i++;
+    }
+
+    foreach my $column ( @{ $columns{'Groups'} } ) {
+        $i = 0;
+        while ( my $entry = $self->Next ) {
+            push @{ $body[ $i++ ]{'cells'} }, {
+                type => 'label',
+                value => $entry->LabelValue( $column )
+            };
+        }
+    }
+
+    foreach my $column ( @{ $columns{'Functions'} } ) {
+        $i = 0;
+        while ( my $entry = $self->Next ) {
             my $raw = $entry->RawValue( $column );
             $total{ $column } += $raw if defined $raw && length $raw;
 
             my $value = $entry->LabelValue( $column );
-            push @{ $row{'cells'} }, { type => 'value', value => $value, query => $entry_query };
+            push @{ $body[ $i++ ]{'cells'} }, {
+                type => 'value',
+                value => $value,
+                query => $entry->Query,
+            };
         }
-        push @body, \%row;
     }
 
     my @footer;
