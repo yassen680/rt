@@ -436,7 +436,7 @@ sub SetupGroupings {
         @_
     );
 
-    $self->FromSQL( $args{'Query'} );
+    $self->FromSQL( $args{'Query'} ) if $args{'Query'};
 
     %GROUPINGS = @GROUPINGS unless keys %GROUPINGS;
 
