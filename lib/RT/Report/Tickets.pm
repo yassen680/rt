@@ -533,7 +533,7 @@ sub _DoSearch {
         );
     }
     else {
-        $self->CalculatePostFunctions;
+        $self->PostProcessRecords;
     }
 }
 
@@ -647,7 +647,7 @@ sub SortEntries {
     ];
 } }
 
-sub CalculatePostFunctions {
+sub PostProcessRecords {
     my $self = shift;
 
     my $info = $self->{'column_info'};
