@@ -60,8 +60,6 @@ foreach my $arg ( keys %ARGS ) {
 
     next unless ( $arg =~ /Approval-(\d+)-Action/ );
 
-    my ( $notesval, $notesmsg );
-
     my $ticket = LoadTicket($1);
 
     if ( $ARGS{ "Approval-" . $ticket->Id . "-Notes" } ) {
