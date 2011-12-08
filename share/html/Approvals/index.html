@@ -58,9 +58,20 @@
 my (@actions);
 foreach my $arg ( keys %ARGS ) {
 
-    next unless ( $arg =~ /Approval-(\d+)-Action/ );
+    next unless ( $arg =~ /Approval-(\d+)-(Action|Status)/ );
 
     my $ticket = LoadTicket($1);
+
+    my $set_status_to;
+    if ( $2 eq 'Action' ) {
+        $set_status_to =
+            $ARGS{$arg} eq 'deny' ? 'rejected'
+            : $ARGS{$arg} eq 'approve' ? 'resolved'
+            : undef
+        ;
+    } else {
+        $set_status_to = $ARGS{$arg};
+    }
 
     if ( $ARGS{ "Approval-" . $ticket->Id . "-Notes" } ) {
         my $notes = MIME::Entity->build(
@@ -76,13 +87,9 @@ foreach my $arg ( keys %ARGS ) {
         }
     }
 
-    my ($val, $msg);
-    if ( $ARGS{$arg} eq 'deny' ) {
-         ( $val, $msg ) = $ticket->SetStatus('rejected');
+    if ( $set_status_to ) {
+        my ( $val, $msg ) = $ticket->SetStatus( $set_status_to );
+        push @actions, loc("Approval #[_1]: [_2]",$ticket->id, $msg ) if ($msg);
     }
-    elsif ( $ARGS{$arg} eq 'approve' ) {
-         ( $val, $msg ) = $ticket->SetStatus('resolved');
-    }
-    push ( @actions, loc("Approval #[_1]: [_2]",$ticket->id, $msg )) if ($msg);
 }
 </%init>
