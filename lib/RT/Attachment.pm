@@ -738,9 +738,6 @@ sub Encrypt {
         return (0, $self->loc('No key suitable for encryption'));
     }
 
-    $self->__Set( Field => 'ContentType', Value => $type );
-    $self->SetHeader( 'Content-Type' => $type );
-
     my $content = $self->Content;
     my %res = RT::Crypt->SignEncryptContent(
         Content => \$content,
@@ -756,6 +753,9 @@ sub Encrypt {
     unless ( $status ) {
         return ($status, $self->loc("Couldn't replace content with encrypted data: [_1]", $msg));
     }
+    $self->__Set( Field => 'ContentType', Value => $type );
+    $self->SetHeader( 'Content-Type' => $type );
+
     return (1, $self->loc('Successfuly encrypted data'));
 }
 
@@ -778,8 +778,6 @@ sub Decrypt {
     } else {
         return (1, $self->loc('Is not encrypted'));
     }
-    $self->__Set( Field => 'ContentType', Value => $type );
-    $self->SetHeader( 'Content-Type' => $type );
 
     my $content = $self->Content;
     my %res = RT::Crypt->DecryptContent( Content => \$content );
@@ -791,6 +789,9 @@ sub Decrypt {
     unless ( $status ) {
         return ($status, $self->loc("Couldn't replace content with decrypted data: [_1]", $msg));
     }
+    $self->__Set( Field => 'ContentType', Value => $type );
+    $self->SetHeader( 'Content-Type' => $type );
+
     return (1, $self->loc('Successfuly decrypted data'));
 }
 
