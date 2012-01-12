@@ -1053,7 +1053,7 @@ sub send_via_mailgate {
 
     my ( $status, $error_message, $ticket )
         = RT::Interface::Email::Gateway( {%args, message => $message} );
-    return ( $status, $ticket->id );
+    return ( $status, $ticket ? $ticket->id : 0 );
 
 }
 
