@@ -99,7 +99,7 @@ while (my $t = $tickets->Next) {
         $url = RT->Config->Get('WebURL');
     }
     else {
-        $url = RT::Interface::Web::GetWebURLFromENV();
+        $url = RT::Interface::Web::GetWebURLFromRequest();
     }
 
     $_->add_properties(
