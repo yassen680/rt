@@ -313,7 +313,7 @@ my $build_admin_menu = sub {
                 title => loc('Dashboards in menu'),
                 path  => '/Admin/Users/DashboardsInMenu.html?id=' . $id,
             );
-            if ( RT->Config->Get('GnuPG')->{'enable'} ) {
+            if ( RT->Config->Get('GnuPG')->{'Enable'} ) {
                 $tabs->child( pgp     => title => loc('GnuPG'),          path => "/Admin/Users/GnuPG.html?id=" . $id );
             }
         }
