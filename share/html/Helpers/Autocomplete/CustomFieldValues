@@ -2,7 +2,7 @@
 %#
 %# COPYRIGHT:
 %#
-%# This software is Copyright (c) 1996-2011 Best Practical Solutions, LLC
+%# This software is Copyright (c) 1996-2012 Best Practical Solutions, LLC
 %#                                          <sales@bestpractical.com>
 %#
 %# (Except where explicitly superseded by other copyright notices)
@@ -46,7 +46,7 @@
 %#
 %# END BPS TAGGED BLOCK }}}
 % $r->content_type('application/json');
-<% JSON::to_json( \@suggestions ) |n %>
+<% JSON( \@suggestions ) |n %>
 % $m->abort;
 <%INIT>
 # Only autocomplete the last value
@@ -69,6 +69,7 @@ $values->Limit(
     OPERATOR        => 'LIKE',
     VALUE           => $term,
     SUBCLAUSE       => 'autocomplete',
+    CASESENSITIVE   => 0,
 );
 $values->Limit(
     ENTRYAGGREGATOR => 'OR',
@@ -76,6 +77,7 @@ $values->Limit(
     OPERATOR        => 'LIKE',
     VALUE           => $term,
     SUBCLAUSE       => 'autocomplete',
+    CASESENSITIVE   => 0,
 );
 
 my @suggestions;
@@ -89,6 +91,4 @@ while( my $value = $values->Next ) {
         : $value->Name,
       };
 }
-
-require JSON;
 </%INIT>
