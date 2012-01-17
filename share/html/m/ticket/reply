@@ -56,7 +56,7 @@
 <input type="hidden" class="hidden" name="Action" value="<% $ARGS{Action}||'' %>" />
 
 % if ($gnupg_widget) {
-<& /Elements/GnuPG/SignEncryptWidget:ShowIssues, self => $gnupg_widget &>
+<& /Elements/Crypt/SignEncryptWidget:ShowIssues, self => $gnupg_widget &>
 % }
 
 <div class="entry"><span class="label"><&|/l&>Status</&>:</span>
@@ -135,7 +135,7 @@
 </div>
 
 % if ( $gnupg_widget ) {
-<& /Elements/GnuPG/SignEncryptWidget, self => $gnupg_widget, QueueObj => $t->QueueObj &>
+<& /Elements/Crypt/SignEncryptWidget, self => $gnupg_widget, QueueObj => $t->QueueObj &>
 % }
 
 <& /Elements/Submit, Label => loc('Update Ticket'), Name => 'SubmitTicket' &>
@@ -234,14 +234,14 @@ unless ( keys %{ $session{'Attachments'} }
     }
 }
 
-my $gnupg_widget = $m->comp('/Elements/GnuPG/SignEncryptWidget:new', Arguments => \%ARGS );
-$m->comp( '/Elements/GnuPG/SignEncryptWidget:Process',
+my $gnupg_widget = $m->comp('/Elements/Crypt/SignEncryptWidget:new', Arguments => \%ARGS );
+$m->comp( '/Elements/Crypt/SignEncryptWidget:Process',
     self => $gnupg_widget,
     TicketObj => $t,
 );
 
 if ( !$checks_failure && exists $ARGS{SubmitTicket} ) {
-    my $status = $m->comp('/Elements/GnuPG/SignEncryptWidget:Check',
+    my $status = $m->comp('/Elements/Crypt/SignEncryptWidget:Check',
         self      => $gnupg_widget,
         TicketObj => $t,
     );
