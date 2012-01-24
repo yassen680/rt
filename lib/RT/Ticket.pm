@@ -2553,6 +2553,109 @@ sub __GetTicketFromURI {
     return (1, 'Found ticket', $obj);
 }
 
+=head2 MemberOfTicketRecursively TICKET_ID
+
+Returns true if current ticket is a member of TICKET_ID, recursively.
+Returns false otherwise.
+
+=cut
+
+sub MemberOfTicketRecursively {
+    my $self = shift;
+    my $id   = shift;
+    my @tickets = $self->_AllLinkedTickets(
+        LinkType  => 'MemberOf',
+        Direction => 'Base',
+    );
+    return grep { $_->id == $id } @tickets;
+}
+
+=head2 HasMemberTicketRecursively TICKET_ID
+
+Returns true if TICKET_ID is a member of current ticket, recursively.
+Returns false otherwise.
+
+=cut
+
+sub HasMemberTicketRecursively {
+    my $self = shift;
+    my $id   = shift;
+    my @tickets = $self->_AllLinkedTickets(
+        LinkType  => 'MemberOf',
+        Direction => 'Target',
+    );
+    return grep { $_->id == $id } @tickets;
+}
+
+=head2 DependsOnTicketRecursively TICKET_ID
+
+Returns true if current ticket depends on TICKET_ID, recursively.
+Returns false otherwise.
+
+=cut
+
+sub DependsOnTicketRecursively {
+    my $self = shift;
+    my $id   = shift;
+
+    my @tickets = $self->_AllLinkedTickets(
+        LinkType  => 'DependsOn',
+        Direction => 'Base',
+    );
+    return grep { $_->id == $id } @tickets;
+}
+
+=head2 DependedOnByTicketRecursively TICKET_ID
+
+Returns true if current ticket is depended on by TICKET_ID, recursively.
+Returns false otherwise.
+
+=cut
+
+sub DependedOnByTicketRecursively {
+    my $self = shift;
+    my $id   = shift;
+    my @tickets = $self->_AllLinkedTickets(
+        LinkType  => 'DependsOn',
+        Direction => 'Target',
+    );
+    return grep { $_->id == $id } @tickets;
+}
+
+=head2 RefersToTicketRecursively TICKET_ID
+
+Returns true if current ticket refers to TICKET_ID, recursively.
+Returns false otherwise.
+
+=cut
+
+sub RefersToTicketRecursively {
+    my $self = shift;
+    my $id   = shift;
+    my @tickets = $self->_AllLinkedTickets(
+        LinkType  => 'RefersTo',
+        Direction => 'Base',
+    );
+    return grep { $_->id == $id } @tickets;
+}
+
+=head2 ReferredToByTicketRecursively TICKET_ID
+
+Returns true if current ticket is referred to by TICKET_ID, recursively.
+Returns false otherwise.
+
+=cut
+
+sub ReferredToByTicketRecursively {
+    my $self = shift;
+    my $id   = shift;
+    my @tickets = $self->_AllLinkedTickets(
+        LinkType  => 'RefersTo',
+        Direction => 'Target',
+    );
+    return grep { $_->id == $id } @tickets;
+}
+
 =head2 _AddLink  
 
 Private non-acled variant of AddLink so that links can be added during create.
@@ -2568,6 +2671,27 @@ sub _AddLink {
                  SilentBase   => undef,
                  SilentTarget => undef,
                  @_ );
+
+    if ( $args{'Type'} =~ /^(?:DependsOn|MemberOf)$/ ) {
+        my $method;
+        if ( $args{'Target'} ) {
+            $method =
+              $args{'Type'} eq 'DependsOn'
+              ? 'DependedOnBy'
+              : 'HasMember';
+        }
+        elsif ( $args{'Base'} ) {
+            $method =
+              $args{'Type'} eq 'DependsOn'
+              ? 'DependsOn'
+              : 'MemberOf';
+        }
+
+        $method .= 'TicketRecursively';
+
+        return ( 0, $self->loc("Circular relationship") )
+          if $self->$method( $args{'Target'} || $args{'Base'} );
+    }
 
     my ($val, $msg, $exist) = $self->SUPER::_AddLink(%args);
     return ($val, $msg) if !$val || $exist;
