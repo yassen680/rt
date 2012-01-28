@@ -432,6 +432,7 @@ AC_CONFIG_FILES([
                  sbin/rt-fulltext-indexer
                  bin/rt-crontool
                  bin/rt-mailgate
+                 sbin/rt-circular-relationship
                  bin/rt],
                 [chmod ug+x $ac_file]
                )
