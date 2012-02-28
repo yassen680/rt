@@ -100,3 +100,6 @@ margin-right:auto;margin-left:auto;
     padding-left: 1em;
 }
 
+#login-box div.login-help {
+    text-align: center;
+}
