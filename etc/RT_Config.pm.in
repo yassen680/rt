@@ -1633,6 +1633,14 @@ your own styles of link detection.
 
 Set(@Active_MakeClicky, qw());
 
+=item C<$QuoteFolding>
+
+Disable quote folding by setting this to 0
+
+=cut
+
+Set($QuoteFolding, 1);
+
 =back
 
 

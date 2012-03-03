@@ -215,8 +215,13 @@ my $render_attachment = sub {
                     ticket  => $Ticket,
                 );
 
-                require HTML::Quoted;
-                $content = HTML::Quoted->extract($content) unless length $name;
+                if ( !length $name
+                    && RT->Config->Get( 'QuoteFolding', $session{CurrentUser} )
+                  )
+                {
+                    require HTML::Quoted;
+                    $content = HTML::Quoted->extract($content);
+                }
 
                 $m->comp(
                     'ShowMessageStanza',
@@ -234,9 +239,15 @@ my $render_attachment = sub {
             # if it's a text/plain show the body
             elsif ( $message->ContentType =~ m{^(text|message)}i ) {
 
-                unless ( length $name ) {
-                    eval { require Text::Quoted;  $content = Text::Quoted::extract($content); };
-                    if ($@) { $RT::Logger->warning( "Text::Quoted failed: $@" ) }
+                unless ( length $name
+                    && RT->Config->Get( 'QuoteFolding', $session{CurrentUser} )
+                  )
+                {
+                    eval {
+                        require Text::Quoted;
+                        $content = Text::Quoted::extract($content);
+                    };
+                    if ($@) { $RT::Logger->warning("Text::Quoted failed: $@") }
                 }
 
                 $m->comp(
