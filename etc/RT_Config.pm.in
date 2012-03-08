@@ -868,6 +868,7 @@ Set(@JSFiles, qw/
     supersubs.js
     jquery.supposition.js
     history-folding.js
+    forms.js
     late.js
 /);
 
