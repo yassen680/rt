@@ -1643,6 +1643,16 @@ your own styles of link detection.
 
 Set(@Active_MakeClicky, qw());
 
+=item C<$QuoteCharacters>
+
+customize quote chars used in Text::Quoted, e.g. to allow ':' and '#':
+
+Set($QuoteCharacters, qr/[:#]/);
+
+=cut
+
+Set($QuoteCharacters, undef);
+
 =back
 
 

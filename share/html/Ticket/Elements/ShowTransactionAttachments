@@ -235,7 +235,11 @@ my $render_attachment = sub {
             elsif ( $message->ContentType =~ m{^(text|message)}i ) {
 
                 unless ( length $name ) {
-                    eval { require Text::Quoted;  $content = Text::Quoted::extract($content); };
+                    eval {
+                        require Text::Quoted;
+                        Text::Quoted::set_quote_char(RT->Config->Get('QuoteCharacters'));
+                        $content = Text::Quoted::extract($content);
+                    };
                     if ($@) { $RT::Logger->warning( "Text::Quoted failed: $@" ) }
                 }
 
