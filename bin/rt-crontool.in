@@ -354,6 +354,8 @@ sub help {
       . loc( "[_1] - Output status updates to STDOUT", "--verbose" ) . "\n";
     print "\n";
     print "\n";
+    print loc("To use this tool, you must create a user account on the server, set up a user in RT, and set Unix login field in the Identity configuration in RT to the server username.") . "\n";
+    print "\n";
     print loc("Security:")."\n";
     print loc("This tool allows the user to run arbitrary perl modules from within RT.")." ". 
         loc("If this tool were setgid, a hostile local user could use this tool to gain administrative access to RT.")." ".
@@ -410,7 +412,9 @@ rt-crontool - a tool to act on tickets from an external scheduling tool
 =head1 DESCRIPTION
 
 This script is a tool to act on tickets from an external scheduling tool, such
-as cron.
+as cron. To use this tool, you must create a user account on the server, set up
+a user in RT, and set Unix login field in the Identity configuration in RT to
+the server username.
 
 Security:
 
