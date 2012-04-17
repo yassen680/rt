@@ -22,4 +22,17 @@
     },
 );
 
+@Templates = (
+    {  Queue       => '0',
+       Name        => 'Reminder',                           # loc
+       Description => 'Default reminder template',          # loc
+       Content     =>
+'To: { $Target = $Ticket->RefersTo->First->TargetObj; ($Argument eq \'TicketOwner\' ? $Target : $Ticket)->OwnerObj->EmailAddress }
+Subject: {$Ticket->Subject} is due {$Ticket->DueAsString}
 
+This reminder is for ticket #{$Target->Id}.
+
+{RT->Config->Get(\'WebURL\')}Ticket/Display.html?id={$Target->Id}
+'
+    },
+);
