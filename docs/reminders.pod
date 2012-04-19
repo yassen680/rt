@@ -46,8 +46,8 @@ To schedule the reminders, add a line like the following to your RT crontab:
                    --search-arg 'Type = "reminder" and (Status = "open" or Status = "new")' \
                    --condition RT::Condition::BeforeDue \
                    --condition-arg 2d \
-                   --action RT::Action::SendEmail \
-                   --action-arg Owner \
+                   --action RT::Action::Notify \
+                   --action-arg Owner,AlwaysNotifyActor \
                    --transaction first \
                    --template 'Reminder'
 
@@ -61,6 +61,12 @@ The argument to C<RT::Condition::BeforeDue> is an amount of time in the form
 "1d2h3m4s" for 1 day and 2 hours and 3 minutes and 4 seconds. As shown in the
 example, single values can also be passed. The run frequency in your crontab
 should be consistent with the time period you set to avoid missing reminders.
+
+The action argument tells Notify to send email to the owner of the reminder.
+The AlwaysNotifyActor argument tells Notify to send email even if
+RT's C<NotifyActor> setting is off (the default). If you don't include this,
+users won't see email for reminders they created for themselves since
+they are the actor on the transaction.
 
 The template value refers to a Template in your RT system. You can use the
 default Reminder template or create your own in Tools > Configuration >

@@ -71,8 +71,11 @@ sub Prepare {
 
 =head2 SetRecipients
 
-Sets the recipients of this meesage to Owner, Requestor, AdminCc, Cc or All. 
-Explicitly B<does not> notify the creator of the transaction by default
+Sets the recipients of this message to Owner, Requestor, AdminCc, Cc or All. 
+Explicitly B<does not> notify the creator of the transaction by default.
+
+To send email to the selected receipients regardless of RT's NotifyActor
+configuration, include AlwaysNotifyActor in the recipients passed in.
 
 =cut
 
@@ -134,12 +137,16 @@ sub SetRecipients {
     my $creatorObj = $self->TransactionObj->CreatorObj;
     my $creator = $creatorObj->EmailAddress() || '';
 
-    #Strip the sender out of the To, Cc and AdminCc and set the 
+    # Strip the sender out of the To, Cc and AdminCc and set the 
     # recipients fields used to build the message by the superclass.
-    # unless a flag is set 
+
+    # Don't strip if AlwaysNotifyActor passed.
+
     my $TransactionCurrentUser = RT::CurrentUser->new;
     $TransactionCurrentUser->LoadByName($creatorObj->Name);
-    if (RT->Config->Get('NotifyActor',$TransactionCurrentUser)) {
+
+    if ( RT->Config->Get('NotifyActor',$TransactionCurrentUser)
+	 || $arg =~ /\bAlwaysNotifyActor\b/ ) {
         @{ $self->{'To'} }  = @To;
         @{ $self->{'Cc'} }  = @Cc;
         @{ $self->{'Bcc'} } = @Bcc;

@@ -47,6 +47,8 @@
 #
 # END BPS TAGGED BLOCK }}}
 use strict;
+use warnings;
+no warnings qw(redefine); # For loc
 use Carp;
 
 # fix lib paths, some may be relative
@@ -145,19 +147,19 @@ my $void_scrip_action = RT::ScripAction->new( $CurrentUser );
 
 #find a bunch of tickets
 my $tickets = RT::Tickets->new($CurrentUser);
-my $search  = $search->new(
+
+# $search_obj is just to differentiate from
+# the $search value provided as input
+my $search_obj  = $search->new(
     TicketsObj  => $tickets,
     Argument    => $search_arg,
     CurrentUser => $CurrentUser
 );
 
-$search->Prepare();
-
-# TicketsFound is an RT::Tickets object
-my $tickets = $search->TicketsObj;
+$search_obj->Prepare();
 
 #for each ticket we've found
-while ( my $ticket = $tickets->Next() ) {
+while ( my $ticket = $search_obj->TicketsObj->Next() ) {
     print $ticket->Id() . ":\n" if ($verbose);
 
     my $template_obj = get_template( $ticket );

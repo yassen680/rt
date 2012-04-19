@@ -401,8 +401,13 @@ sub SendEmail {
     my $mail_command = RT->Config->Get('MailCommand');
 
     if ($mail_command eq 'testfile' and not $Mail::Mailer::testfile::config{outfile}) {
-        $Mail::Mailer::testfile::config{outfile} = File::Temp->new;
-        $RT::Logger->info("Storing outgoing emails in $Mail::Mailer::testfile::config{outfile}");
+
+      # File::Temp default is to remove temp files (UNLINK => 1)
+      # This keeps files around when in debug mode (UNLINK => 0)
+      my $unlink = !(RT->Config->Get('LogToScreen') eq 'debug');
+
+      $Mail::Mailer::testfile::config{outfile} = File::Temp->new ( UNLINK => $unlink );
+      $RT::Logger->info("Storing outgoing emails in $Mail::Mailer::testfile::config{outfile}");
     }
 
     # if it is a sub routine, we just return it;
