@@ -90,7 +90,10 @@ if (!$changes{Text} && @atts == 0) {
 
 my $cgi = $m->cgi_object;
 my $ent = MIME::Entity->build(Type => "multipart/mixed");
-$ent->attach(Data => $changes{Text}) if $changes{Text};
+$ent->attach(
+    'Content-Type' => $changes{'Content-Type'} || 'text/plain',
+    Data => $changes{Text},
+) if $changes{Text};
 
 my $i = 1;
 foreach my $att (@atts) {

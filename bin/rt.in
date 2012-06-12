@@ -470,7 +470,7 @@ sub show {
 sub edit {
     my ($action) = @_;
     my (%data, $type, @objects);
-    my ($cl, $text, $edit, $input, $output);
+    my ($cl, $text, $edit, $input, $output, $content_type);
 
     use vars qw(%set %add %del);
     %set = %add = %del = ();
@@ -484,6 +484,7 @@ sub edit {
         if    (/^-e$/) { $edit = 1 }
         elsif (/^-i$/) { $input = 1 }
         elsif (/^-o$/) { $output = 1 }
+        elsif (/^-ct$/) { $content_type = shift @ARGV }
         elsif (/^-t$/) {
             $bad = 1, last unless defined($type = get_type_argument());
         }
@@ -658,6 +659,11 @@ sub edit {
 EDIT:
     # We'll let the user edit the form before sending it to the server,
     # unless we have enough information to submit it non-interactively.
+    if ( $type eq 'ticket' && $text !~ /^Content-Type:/m ) {
+        $content_type ||= 'text/plain';
+        $text .= "Content-Type: $content_type\n";
+    }
+
     if ($edit || (!$input && !$cl)) {
         my $newtext = vi($text);
         # We won't resubmit a bad form unless it was changed.
@@ -736,7 +742,7 @@ sub setcommand {
 
 sub comment {
     my ($action) = @_;
-    my (%data, $id, @files, @bcc, @cc, $msg, $wtime, $edit);
+    my (%data, $id, @files, @bcc, @cc, $msg, $content_type, $wtime, $edit);
     my $bad = 0;
 
     while (@ARGV) {
@@ -769,7 +775,9 @@ sub comment {
                     while (<STDIN>) { $msg .= $_ }
                 }
             }
-
+            elsif (/-ct/) {
+                $content_type = shift @ARGV;
+            }
             elsif (/-w/) { $wtime = shift @ARGV }
         }
         elsif (!$id && m|^(?:ticket/)?($idlist)$|) {
@@ -791,7 +799,7 @@ sub comment {
 
     my $form = [
         "",
-        [ "Ticket", "Action", "Cc", "Bcc", "Attachment", "TimeWorked", "Text" ],
+        [ "Ticket", "Action", "Cc", "Bcc", "Attachment", "TimeWorked", "Content-Type", "Text" ],
         {
             Ticket     => $id,
             Action     => $action,
@@ -799,6 +807,7 @@ sub comment {
             Bcc        => [ @bcc ],
             Attachment => [ @files ],
             TimeWorked => $wtime || '',
+            'Content-Type' => $content_type || 'text/plain',
             Text       => $msg || '',
             Status => ''
         }
@@ -2331,6 +2340,7 @@ Text:
     Options:
 
         -m <text>       Specify comment text.
+        -ct <content-type> Specify content-type of comment text.
         -a <file>       Attach a file to the comment. (May be used more
                         than once to attach multiple files.)
         -c <addrs>      A comma-separated list of Cc addresses.
