@@ -751,7 +751,7 @@ sub comment {
         if (/^-e$/) {
             $edit = 1;
         }
-        elsif (/^-[abcmw]$/) {
+        elsif (/^-(?:[abcmw]|ct)$/) {
             unless (@ARGV) {
                 whine "No argument specified with $_.";
                 $bad = 1; last;
@@ -764,6 +764,9 @@ sub comment {
                 }
                 push @files, shift @ARGV;
             }
+            elsif (/-ct/) {
+                $content_type = shift @ARGV;
+            }
             elsif (/-([bc])/) {
                 my $a = $_ eq "-b" ? \@bcc : \@cc;
                 @$a = split /\s*,\s*/, shift @ARGV;
@@ -774,9 +777,6 @@ sub comment {
                     undef $msg;
                     while (<STDIN>) { $msg .= $_ }
                 }
-            }
-            elsif (/-ct/) {
-                $content_type = shift @ARGV;
             }
             elsif (/-w/) { $wtime = shift @ARGV }
         }
