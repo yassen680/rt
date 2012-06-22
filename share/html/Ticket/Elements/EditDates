@@ -48,12 +48,15 @@
 <table>
   <tr>
     <td class="label"><&|/l&>Starts</&>:</td>
-    <td class="entry"><& /Elements/SelectDate, menu_prefix => 'Starts', current => 0 &> 
-        (<% $TicketObj->StartsObj->AsString %>)</td>
+    <td class="entry">
+        <& /Elements/SelectDate, menu_prefix => 'Starts', current => 0, Default => $TicketObj->StartsObj->Unix ? $TicketObj->StartsObj->ISO( Timezone => 'user' ) : '' &>
+    </td>
   </tr>
   <tr>
     <td class="label"><&|/l&>Started</&>:</td>
-    <td class="entry"><& /Elements/SelectDate, menu_prefix => 'Started', current => 0 &> (<%$TicketObj->StartedObj->AsString %>)</td>
+    <td class="entry">
+        <& /Elements/SelectDate, menu_prefix => 'Started', current => 0, Default => $TicketObj->StartedObj->Unix ? $TicketObj->StartedObj->ISO( Timezone => 'user' )  : '' &>
+    </td>
   </tr>
 
   <tr>
@@ -61,13 +64,13 @@
       <&|/l&>Last Contact</&>:
     </td>
     <td class="entry">
-      <& /Elements/SelectDate, menu_prefix => 'Told', current => 0 &> (<% $TicketObj->ToldObj->AsString %>)
+        <& /Elements/SelectDate, menu_prefix => 'Told', current => 0, Default => $TicketObj->ToldObj->Unix ?  $TicketObj->ToldObj->ISO(Timezone => 'user') : '' &>
     </td>
   </tr>
   <tr>
     <td class="label"><&|/l&>Due</&>:</td>
     <td class="entry">
-      <& /Elements/SelectDate, menu_prefix => 'Due', current => 0 &> (<% $TicketObj->DueObj->AsString %>)
+      <& /Elements/SelectDate, menu_prefix => 'Due', current => 0, Default => $TicketObj->DueObj->Unix ? $TicketObj->DueObj->ISO(Timezone => 'user') : '' &>
     </td>
   </tr>
 % $m->callback( %ARGS, CallbackName => 'EndOfList', Ticket => $TicketObj );
