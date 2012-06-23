@@ -120,7 +120,7 @@ jQuery(  function () {
 % }
 <select
   name="<%$id%>-Values" id="<%$id%>-Values" class="CF-<%$CustomField->id%>-Edit"
-% if ( $Rows && ( $Multiple || !@category ) ) {
+% if ( $Rows && ( $Multiple || !@category || $RenderType eq 'Select box' ) ) {
   size="<% $Rows %>"
 % }
 <% $Multiple && qq[multiple="multiple"] |n %> >
