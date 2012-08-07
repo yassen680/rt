@@ -405,9 +405,8 @@ The ticket has been approved, you may now start to act on it.
        Name        => "Forward",    # loc
        Description => "Forwarded message", # loc
        Content => q{
-This is a forward of transaction #{$Transaction->id} of ticket #{ $Ticket->id }
 
-{ $ForwardTransaction->Content }
+{ $ForwardTransaction->Content =~ /\S/ ? $ForwardTransaction->Content : "This is a forward of transaction #".$Transaction->id." of ticket #". $Ticket->id }
 }
     },
     {  Queue       => 0,
@@ -415,9 +414,7 @@ This is a forward of transaction #{$Transaction->id} of ticket #{ $Ticket->id }
        Description => "Forwarded ticket message", # loc
        Content => q{
 
-This is a forward of ticket #{ $Ticket->id }
-
-{ $ForwardTransaction->Content }
+{ $ForwardTransaction->Content =~ /\S/ ? $ForwardTransaction->Content : "This is a forward of ticket #". $Ticket->id }
 }
     },
     {  Queue       => 0,
