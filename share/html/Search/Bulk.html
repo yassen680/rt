@@ -193,6 +193,9 @@ $cfs->LimitToQueue($_) for keys %$seen_queues;
 % } elsif ($cf->Type eq 'Freeform') {
 <td><& /Elements/EditCustomFieldFreeform, @add &></td>
 <td><& /Elements/EditCustomFieldFreeform, @del &></td>
+% } elsif ($cf->Type eq 'Autocomplete') {
+<td><& /Elements/EditCustomFieldAutocomplete, @add &></td>
+<td><& /Elements/EditCustomFieldAutocomplete, @del &></td>
 % } elsif ($cf->Type eq 'Text') {
 <td><& /Elements/EditCustomFieldText, @add &></td>
 <td>&nbsp;</td>
