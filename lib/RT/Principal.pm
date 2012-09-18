@@ -263,14 +263,14 @@ sub HasRight {
         return 1;
     }
 
-    $args{'Right'} = RT::ACE->CanonicalizeRightName( $args{'Right'} );
-    unless ( $args{'Right'} ) {
+    my $right = RT::ACE->CanonicalizeRightName( $args{'Right'} );
+    unless ( $right ) {
         $RT::Logger->error(
                "Invalid right. Couldn't canonicalize right '$args{'Right'}'");
         return undef;
     }
 
-    return undef if $args{'Right'} eq 'ExecuteCode'
+    return undef if $right eq 'ExecuteCode'
         and RT->Config->Get('DisallowExecuteCode');
 
     $args{'EquivObjects'} = [ @{ $args{'EquivObjects'} } ]
@@ -280,7 +280,7 @@ sub HasRight {
         $RT::Logger->debug(   "Disabled User #"
                             . $self->id
                             . " failed access check for "
-                            . $args{'Right'} );
+                            . $right );
         return (undef);
     }
 
@@ -295,7 +295,7 @@ sub HasRight {
         my $cached = $_ACL_CACHE->fetch(
             $self->id .';:;'. ref($args{'Object'}) .'-'. $args{'Object'}->id
         );
-        return $cached->{'SuperUser'} || $cached->{ $args{'Right'} }
+        return $cached->{'SuperUser'} || $cached->{ $right }
             if $cached;
     }
 
@@ -312,12 +312,12 @@ sub HasRight {
 # 1) full_hashkey - key for any result and for full combination of uid, right and objects
 # 2) short_hashkey - one key for each object to store positive results only, it applies
 # only to direct group rights and partly to role rights
-    my $full_hashkey = join (";:;", $self->id, $args{'Right'});
+    my $full_hashkey = join (";:;", $self->id, $right);
     foreach ( @{ $args{'EquivObjects'} } ) {
         my $ref_id = $self->_ReferenceId($_);
         $full_hashkey .= ";:;".$ref_id;
 
-        my $short_hashkey = join(";:;", $self->id, $args{'Right'}, $ref_id);
+        my $short_hashkey = join(";:;", $self->id, $right, $ref_id);
         my $cached_answer = $_ACL_CACHE->fetch($short_hashkey);
         return $cached_answer > 0 if defined $cached_answer;
     }
@@ -330,7 +330,7 @@ sub HasRight {
     my ( $hitcount, $via_obj ) = $self->_HasRight(%args);
 
     $_ACL_CACHE->set( $full_hashkey => $hitcount ? 1 : -1 );
-    $_ACL_CACHE->set( join(';:;',  $self->id, $args{'Right'},$via_obj) => 1 )
+    $_ACL_CACHE->set( join(';:;',  $self->id, $right,$via_obj) => 1 )
         if $via_obj && $hitcount;
 
     return ($hitcount);

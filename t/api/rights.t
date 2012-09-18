@@ -47,10 +47,12 @@
 # 
 # END BPS TAGGED BLOCK }}}
 
-use RT::Test nodata => 1, tests => 30;
+use RT::Test nodata => 1, tests => 34;
 
 use strict;
 use warnings;
+
+use Test::Warn;
 
 # clear all global right
 {
@@ -194,4 +196,21 @@ my $ticket2;
     ok( !$user->HasRight( Right => 'ModifyTicket', Object => $ticket2, EquivObjects => \@list ), 
         "user is not AdminCc and can't modify ticket2 (same question different answer)"
     );
+}
+
+my $queue2 = RT::Test->load_or_create_queue( Name => 'Rights' );
+ok $queue2 && $queue2->id, 'loaded or created queue';
+
+my $user2 = RT::Test->load_or_create_user(
+    Name => 'user2', Password => 'password',
+);
+ok $user2 && $user2->id, 'Created user: ' . $user2->Name . ' with id ' . $user2->Id;
+
+{
+    ok( !$user2->HasRight( Right => 'Foo', Object => $queue2 ),
+        "HasRight false for invalid right Foo"
+    );
+    warning_like {$user2->HasRight( Right => 'Foo', Object => $queue2 )}
+                qr/Invalid right\. Couldn't canonicalize right 'Foo'/,
+                  'Got warning on invalid right';
 }
