@@ -47,22 +47,17 @@
 # 
 # END BPS TAGGED BLOCK }}}
 
-use RT::Test nodata => 1, tests => 34;
+use RT::Test nodata => 1, tests => 38;
 
 use strict;
 use warnings;
 
 use Test::Warn;
 
+sub reset_rights { RT::Test->set_rights }
+
 # clear all global right
-{
-    my $acl = RT::ACL->new(RT->SystemUser);
-    $acl->Limit( FIELD => 'RightName', OPERATOR => '!=', VALUE => 'SuperUser' );
-    $acl->LimitToObject( $RT::System );
-    while( my $ace = $acl->Next ) {
-            $ace->Delete;
-    }
-}
+reset_rights;
 
 my $queue = RT::Test->load_or_create_queue( Name => 'Regression' );
 ok $queue && $queue->id, 'loaded or created queue';
@@ -213,4 +208,23 @@ ok $user2 && $user2->id, 'Created user: ' . $user2->Name . ' with id ' . $user2-
     warning_like {$user2->HasRight( Right => 'Foo', Object => $queue2 )}
                 qr/Invalid right\. Couldn't canonicalize right 'Foo'/,
                   'Got warning on invalid right';
+}
+
+note "Right name canonicalization";
+{
+    reset_rights;
+    my ($ok, $msg) = $user->PrincipalObj->GrantRight(
+        Right   => "showticket",
+        Object  => RT->System,
+    );
+    ok $ok, "Granted showticket: $msg";
+    ok $user->HasRight( Right => "ShowTicket", Object => RT->System ), "HasRight ShowTicket";
+
+    reset_rights;
+    ($ok, $msg) = $user->PrincipalObj->GrantRight(
+        Right   => "ShowTicket",
+        Object  => RT->System,
+    );
+    ok $ok, "Granted ShowTicket: $msg";
+    ok $user->HasRight( Right => "showticket", Object => RT->System ), "HasRight showticket";
 }
