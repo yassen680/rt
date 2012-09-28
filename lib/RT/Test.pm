@@ -1195,7 +1195,7 @@ sub lsign_gnupg_key {
 
     require RT::Crypt::GnuPG;
 
-    return RT::Crypt::GnuPG::CallGnuPG(
+    return RT::Crypt::GnuPG->CallGnuPG(
         Command     => '--lsign-key',
         CommandArgs => [$key],
         Callback    => sub {
@@ -1215,7 +1215,7 @@ sub trust_gnupg_key {
 
     require RT::Crypt::GnuPG;
 
-    return RT::Crypt::GnuPG::CallGnuPG(
+    return RT::Crypt::GnuPG->CallGnuPG(
         Command     => '--edit-key',
         CommandArgs => [$key],
         Callback    => sub {
