@@ -1026,9 +1026,13 @@ sub VerifyDecrypt {
         }
         if ( $args{'SetStatus'} || $args{'AddStatus'} ) {
             my $method = $args{'AddStatus'} ? 'add' : 'set';
+            # Let the header be modified so continuations are handled
+            my $modify = $status_on->head->modify;
+            $status_on->head->modify(1);
             $status_on->head->$method(
                 'X-RT-GnuPG-Status' => $res{'status'}
             );
+            $status_on->head->modify($modify);
         }
     } elsif ( $item->{'Type'} eq 'encrypted' ) {
         my $status_on;
@@ -1046,9 +1050,13 @@ sub VerifyDecrypt {
         }
         if ( $args{'SetStatus'} || $args{'AddStatus'} ) {
             my $method = $args{'AddStatus'} ? 'add' : 'set';
+            # Let the header be modified so continuations are handled
+            my $modify = $status_on->head->modify;
+            $status_on->head->modify(1);
             $status_on->head->$method(
                 'X-RT-GnuPG-Status' => $res{'status'}
             );
+            $status_on->head->modify($modify);
         }
     } else {
         die "Unknow type '". $item->{'Type'} ."' of protected item";
