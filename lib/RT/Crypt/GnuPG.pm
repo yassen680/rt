@@ -1026,9 +1026,13 @@ sub VerifyDecrypt {
         }
         if ( $args{'SetStatus'} || $args{'AddStatus'} ) {
             my $method = $args{'AddStatus'} ? 'add' : 'set';
+            # Let the header be modified so continuations are handled
+            my $modify = $status_on->head->modify;
+            $status_on->head->modify(1);
             $status_on->head->$method(
                 'X-RT-GnuPG-Status' => $res{'status'}
             );
+            $status_on->head->modify($modify);
         }
     } elsif ( $item->{'Type'} eq 'encrypted' ) {
         my $status_on;
@@ -1046,9 +1050,13 @@ sub VerifyDecrypt {
         }
         if ( $args{'SetStatus'} || $args{'AddStatus'} ) {
             my $method = $args{'AddStatus'} ? 'add' : 'set';
+            # Let the header be modified so continuations are handled
+            my $modify = $status_on->head->modify;
+            $status_on->head->modify(1);
             $status_on->head->$method(
                 'X-RT-GnuPG-Status' => $res{'status'}
             );
+            $status_on->head->modify($modify);
         }
     } else {
         die "Unknow type '". $item->{'Type'} ."' of protected item";
@@ -1765,7 +1773,7 @@ sub GetKeysInfo {
             'fixed-list-mode' => undef, # don't merge uid with keys
         },
         Command     => $method,
-        ( $email ? (CommandArgs => [$email]) : () ),
+        ( $email ? (CommandArgs => ["--",$email]) : () ),
         Output      => \@info,
     );
     return %res if $res{'message'};
@@ -1915,7 +1923,7 @@ sub DeleteKey {
 
     return $self->CallGnuPG(
         Command     => "--delete-secret-and-public-key",
-        CommandArgs => [$key],
+        CommandArgs => ["--",$key],
         Callback    => sub {
             my %handle = @_;
             while ( my $str = readline $handle{'status'} ) {

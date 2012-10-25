@@ -114,9 +114,11 @@ sub GetCurrentUser {
     # we clean all possible headers
     my @headers =
         qw(
-            X-RT-Incoming-Encrypton
+            X-RT-Incoming-Encryption
             X-RT-Incoming-Signature
             X-RT-Privacy
+            X-RT-Sign
+            X-RT-Encrypt
         ),
         map "X-RT-$_-Status", RT::Crypt->Protocols;
     foreach my $p ( $args{'Message'}->parts_DFS ) {
@@ -214,13 +216,13 @@ sub HandleErrors {
         unless ( $sent_once{'NoPrivateKey'} ) {
             unless ( CheckNoPrivateKey( Message => $args{'Message'}, Status => \@status ) ) {
                 $sent_once{'NoPrivateKey'}++;
-                $reject = 1 if RT->Config->Get('GnuPG')->{'RejectOnMissingPrivateKey'};
+                $reject = 1 if RT->Config->Get('Crypt')->{'RejectOnMissingPrivateKey'};
             }
         }
         unless ( $sent_once{'BadData'} ) {
             unless ( CheckBadData( Message => $args{'Message'}, Status => \@status ) ) {
                 $sent_once{'BadData'}++;
-                $reject = 1 if RT->Config->Get('GnuPG')->{'RejectOnBadData'};
+                $reject = 1 if RT->Config->Get('Crypt')->{'RejectOnBadData'};
             }
         }
     }
