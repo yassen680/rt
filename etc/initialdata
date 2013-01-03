@@ -98,6 +98,9 @@
     { Name        => 'Extract Subject Tag',                               # loc
       Description => 'Extract tags from a Transaction\'s subject and add them to the Ticket\'s subject.', # loc
       ExecModule  => 'ExtractSubjectTag' },
+    { Name        => 'Open Inactive Tickets',                                      # loc
+      Description => 'Open inactive tickets',                    # loc
+      ExecModule  => 'AutoOpenInactive' },
 );
 
 @ScripConditions = (
