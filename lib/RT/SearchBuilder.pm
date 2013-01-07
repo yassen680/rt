@@ -86,9 +86,23 @@ sub _Init  {
     $self->SUPER::_Init( 'Handle' => $RT::Handle);
 }
 
-sub CleanSlate {
+sub ResetInternalFlags {
     my $self = shift;
     $self->{'_sql_aliases'} = {};
+    delete $self->{'handled_disabled_column'};
+    delete $self->{'find_disabled_rows'};
+    $self->{'must_redo_search'} = 1;
+}
+
+sub UnLimit {
+    my $self = shift;
+    $self->ResetInternalFlags;
+    return $self->SUPER::UnLimit(@_);
+}
+
+sub CleanSlate {
+    my $self = shift;
+    $self->ResetInternalFlags;
     return $self->SUPER::CleanSlate(@_);
 }
 

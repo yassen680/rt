@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 use RT;
-use RT::Test tests => 11;
+use RT::Test tests => 16;
 
 
 {
@@ -37,3 +37,19 @@ is_deeply(\@items_ids, \@sorted_ids, "ItemsArrayRef sorts alphabetically by name
 
 }
 
+#20767: UnLimit doesn't clear RT::SearchBuilder's flags for handling Disabled columns
+{
+  my $items;
+
+  ok(my $queues = RT::Queues->new(RT->SystemUser), 'Created a queues object');
+  ok( $queues->UnLimit(),'Unlimited the result set of the queues object');
+
+  $queues->FindAllRows;
+
+  $items = $queues->ItemsArrayRef();
+  is( @$items, 2, 'found disabled queue in search' );
+
+  ok( $queues->UnLimit(),'Unlimited the result set of the queues object');
+  $items = $queues->ItemsArrayRef();
+  is( @$items, 1, 'disabled queue was not in search' );
+}
