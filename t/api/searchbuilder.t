@@ -53,3 +53,4 @@ is_deeply(\@items_ids, \@sorted_ids, "ItemsArrayRef sorts alphabetically by name
   $items = $queues->ItemsArrayRef();
   is( @$items, 1, 'disabled queue was not in search' );
 }
+
