@@ -71,6 +71,8 @@ sub _Init {
 	   ORDER => 'ASC' },
      );
 
+    $self->{'with_disabled_column'} = 1;
+
     return ( $self->SUPER::_Init(@_) );
 }
 

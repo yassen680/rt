@@ -76,6 +76,12 @@ use base 'RT::SearchBuilder';
 
 sub Table { 'CachedGroupMembers'}
 
+sub _Init {
+    my $self = shift;
+    $self->{'with_disabled_column'} = 1;
+    return ($self->SUPER::_Init(@_));
+}
+
 # {{{ LimitToUsers
 
 =head2 LimitToUsers
