@@ -54,6 +54,11 @@ use base 'RT::SearchBuilder';
 
 sub Table {'Classes'}
 
+sub _Init {
+  my $self = shift;
+  $self->{'with_disabled_column'} = 1;
+  return ($self->SUPER::_Init(@_));
+}
 
 =head2 Next
 
