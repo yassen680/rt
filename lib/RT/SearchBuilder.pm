@@ -239,7 +239,7 @@ sub _CustomFieldJoin {
     else {
         my $ocfalias = $self->Join(
             TYPE       => 'LEFT',
-            FIELD1     => 'Queue',
+            EXPRESSION => q|'0'|,
             TABLE2     => 'ObjectCustomFields',
             FIELD2     => 'ObjectId',
         );
@@ -248,8 +248,9 @@ sub _CustomFieldJoin {
             LEFTJOIN        => $ocfalias,
             ENTRYAGGREGATOR => 'OR',
             FIELD           => 'ObjectId',
-            VALUE           => '0',
-        );
+            VALUE           => 'main.Queue',
+            QUOTEVALUE      => 0,
+        ) if $self->isa("RT::Tickets");
 
         $CFs = $self->{_sql_cf_alias}{$cfkey} = $self->Join(
             TYPE       => 'LEFT',
@@ -262,7 +263,7 @@ sub _CustomFieldJoin {
             LEFTJOIN        => $CFs,
             ENTRYAGGREGATOR => 'AND',
             FIELD           => 'LookupType',
-            VALUE           => 'RT::Queue-RT::Ticket',
+            VALUE           => $self->NewItem->CustomFieldLookupType,
         );
         $self->Limit(
             LEFTJOIN        => $CFs,
@@ -289,7 +290,7 @@ sub _CustomFieldJoin {
     $self->Limit(
         LEFTJOIN        => $ocfvalias,
         FIELD           => 'ObjectType',
-        VALUE           => 'RT::Ticket',
+        VALUE           => ref($self->NewItem),
         ENTRYAGGREGATOR => 'AND'
     );
     $self->Limit(
