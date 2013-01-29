@@ -348,8 +348,22 @@ use Regexp::Common::net::CIDR;
 
 sub _LimitCustomField {
     my $self = shift;
-    my ( $field, $queue, $cfid, $cf, $column, $op, $value, %rest ) = @_;
+    my %args = ( VALUE        => undef,
+                 CUSTOMFIELD  => undef,
+                 OPERATOR     => '=',
+                 KEY          => undef,
+                 @_ );
 
+    my $op     = delete $args{OPERATOR};
+    my $value  = delete $args{VALUE};
+    my $cf     = delete $args{CUSTOMFIELD};
+    my $column = delete $args{COLUMN};
+    my $cfkey  = delete $args{KEY};
+    if (blessed($cf) and $cf->id) {
+        $cfkey ||= $cf->id;
+    } else {
+        $cfkey ||= $cf;
+    }
 
 # If we're trying to find custom fields that don't match something, we
 # want tickets where the custom field has no value at all.  Note that
@@ -378,7 +392,7 @@ sub _LimitCustomField {
         return %args;
     };
 
-    if ( $cf && $cf->Type eq 'IPAddress' ) {
+    if ( blessed($cf) && $cf->Type eq 'IPAddress' ) {
         my $parsed = RT::ObjectCustomFieldValue->ParseIP($value);
         if ($parsed) {
             $value = $parsed;
@@ -388,7 +402,7 @@ sub _LimitCustomField {
         }
     }
 
-    if ( $cf && $cf->Type eq 'IPAddressRange' ) {
+    if ( blessed($cf) && $cf->Type eq 'IPAddressRange' ) {
 
         if ( $value =~ /^\s*$RE{net}{CIDR}{IPv4}{-keep}\s*$/o ) {
 
@@ -419,22 +433,20 @@ sub _LimitCustomField {
         }
     }
 
-    my $single_value = !$cf || !$cfid || $cf->SingleValue;
-
-    my $cfkey = $cfid ? $cfid : "$queue.$field";
+    my $single_value = !blessed($cf) || $cf->SingleValue;
 
     if ( $null_op && !$column ) {
         # IS[ NOT] NULL without column is the same as has[ no] any CF value,
         # we can reuse our default joins for this operation
         # with column specified we have different situation
-        my ($ocfvalias, $CFs) = $self->_CustomFieldJoin( $cfkey, ($cf || $field) );
+        my ($ocfvalias, $CFs) = $self->_CustomFieldJoin( $cfkey, $cf );
         $self->_OpenParen;
         $self->Limit(
             ALIAS    => $ocfvalias,
             FIELD    => 'id',
             OPERATOR => $op,
             VALUE    => $value,
-            %rest
+            %args
         );
         $self->Limit(
             ALIAS      => $CFs,
@@ -446,19 +458,26 @@ sub _LimitCustomField {
         ) if $CFs;
         $self->_CloseParen;
     }
-    elsif ( $op !~ /^[<>]=?$/ && (  $cf && $cf->Type eq 'IPAddressRange')) {
-    
+    elsif ( $op !~ /^[<>]=?$/ && (  blessed($cf) && $cf->Type eq 'IPAddressRange')) {
         my ($start_ip, $end_ip) = split /-/, $value;
         
         $self->_OpenParen;
         if ( $op !~ /NOT|!=|<>/i ) { # positive equation
             $self->_LimitCustomField(
-                $field, $queue, $cfid, $cf, 'Content', '<=', $end_ip, %rest,
+                OPERATOR    => '<=',
+                VALUE       => $end_ip,
+                CUSTOMFIELD => $cf,
+                COLUMN      => 'Content',
+                %args,
             );
             $self->_LimitCustomField(
-                $field, $queue, $cfid, $cf, 'LargeContent', '>=', $start_ip, %rest,
+                OPERATOR    => '>=',
+                VALUE       => $start_ip,
+                CUSTOMFIELD => $cf,
+                COLUMN      => 'LargeContent',
+                %args,
                 ENTRYAGGREGATOR => 'AND',
-            ); 
+            );
             # as well limit borders so DB optimizers can use better
             # estimations and scan less rows
 # have to disable this tweak because of ipv6
@@ -474,11 +493,21 @@ sub _LimitCustomField {
 #            );  
         }       
         else { # negative equation
-            $self->_LimitCustomField( $field, $queue, $cfid, $cf, 'Content', '>', $end_ip, %rest);
             $self->_LimitCustomField(
-                $field, $queue, $cfid, $cf, 'LargeContent', '<', $start_ip, %rest,
+                OPERATOR    => '>',
+                VALUE       => $end_ip,
+                CUSTOMFIELD => $cf,
+                COLUMN      => 'Content',
+                %args,
+            );
+            $self->_LimitCustomField(
+                OPERATOR    => '<',
+                VALUE       => $start_ip,
+                CUSTOMFIELD => $cf,
+                COLUMN      => 'LargeContent',
+                %args,
                 ENTRYAGGREGATOR => 'OR',
-            );  
+            );
             # TODO: as well limit borders so DB optimizers can use better
             # estimations and scan less rows, but it's harder to do
             # as we have OR aggregator
@@ -487,7 +516,7 @@ sub _LimitCustomField {
     } 
     elsif ( !$negative_op || $single_value ) {
         $cfkey .= '.'. $self->{'_sql_multiple_cfs_index'}++ if not $single_value and not $op =~ /^[<>]=?$/;
-        my ($ocfvalias, $CFs) = $self->_CustomFieldJoin( $cfkey, ($cf || $field) );
+        my ($ocfvalias, $CFs) = $self->_CustomFieldJoin( $cfkey, $cf );
 
         $self->_OpenParen;
 
@@ -503,7 +532,7 @@ sub _LimitCustomField {
                 OPERATOR   => $op,
                 VALUE      => $value,
                 CASESENSITIVE => 0,
-                %rest
+                %args
             ) );
             $self->_CloseParen;
             $self->_CloseParen;
@@ -511,7 +540,7 @@ sub _LimitCustomField {
         }
         else {
             # need special treatment for Date
-            if ( $cf and $cf->Type eq 'DateTime' and $op eq '=' ) {
+            if ( blessed($cf) and $cf->Type eq 'DateTime' and $op eq '=' ) {
 
                 if ( $value =~ /:/ ) {
                     # there is time speccified.
@@ -522,7 +551,7 @@ sub _LimitCustomField {
                         FIELD    => 'Content',
                         OPERATOR => "=",
                         VALUE    => $date->ISO,
-                        %rest,
+                        %args,
                     );
                 }
                 else {
@@ -543,7 +572,7 @@ sub _LimitCustomField {
                         FIELD    => 'Content',
                         OPERATOR => ">=",
                         VALUE    => $daystart,
-                        %rest,
+                        %args,
                     );
 
                     $self->Limit(
@@ -551,7 +580,7 @@ sub _LimitCustomField {
                         FIELD    => 'Content',
                         OPERATOR => "<=",
                         VALUE    => $dayend,
-                        %rest,
+                        %args,
                         ENTRYAGGREGATOR => 'AND',
                     );
 
@@ -566,7 +595,7 @@ sub _LimitCustomField {
                         OPERATOR => $op,
                         VALUE    => $value,
                         CASESENSITIVE => 0,
-                        %rest
+                        %args
                     );
                 }
                 else {
@@ -603,7 +632,7 @@ sub _LimitCustomField {
                     OPERATOR => $op,
                     VALUE    => $value,
                     CASESENSITIVE => 0,
-                    %rest
+                    %args
                 );
 
                 $self->_OpenParen;
@@ -672,7 +701,7 @@ sub _LimitCustomField {
     }
     else {
         $cfkey .= '.'. $self->{'_sql_multiple_cfs_index'}++;
-        my ($ocfvalias, $CFs) = $self->_CustomFieldJoin( $cfkey, ($cf || $field) );
+        my ($ocfvalias, $CFs) = $self->_CustomFieldJoin( $cfkey, $cf );
 
         # reverse operation
         $op =~ s/!|NOT\s+//i;
@@ -700,7 +729,7 @@ sub _LimitCustomField {
             );
         }
         $self->Limit(
-            %rest,
+            %args,
             ALIAS      => $ocfvalias,
             FIELD      => 'id',
             OPERATOR   => 'IS',
