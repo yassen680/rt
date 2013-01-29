@@ -1308,10 +1308,10 @@ sub _SQLJoin {
 }
 
 sub _OpenParen {
-    $_[0]->SUPER::_OpenParen( 'ticketsql' );
+    $_[0]->SUPER::_OpenParen( $_[1] || 'ticketsql' );
 }
 sub _CloseParen {
-    $_[0]->SUPER::_CloseParen( 'ticketsql' );
+    $_[0]->SUPER::_CloseParen( $_[1] || 'ticketsql' );
 }
 
 sub Limit {

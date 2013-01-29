@@ -366,6 +366,8 @@ sub _LimitCustomField {
         $cfkey ||= $cf;
     }
 
+    $args{SUBCLAUSE} ||= "cf-$cfkey";
+
 # If we're trying to find custom fields that don't match something, we
 # want tickets where the custom field has no value at all.  Note that
 # we explicitly don't include the "IS NULL" case, since we would
@@ -441,7 +443,7 @@ sub _LimitCustomField {
         # we can reuse our default joins for this operation
         # with column specified we have different situation
         my ($ocfvalias, $CFs) = $self->_CustomFieldJoin( $cfkey, $cf );
-        $self->_OpenParen;
+        $self->_OpenParen( $args{SUBCLAUSE} );
         $self->Limit(
             ALIAS    => $ocfvalias,
             FIELD    => 'id',
@@ -457,12 +459,11 @@ sub _LimitCustomField {
             QUOTEVALUE => 0,
             ENTRYAGGREGATOR => 'AND',
         ) if $CFs;
-        $self->_CloseParen;
+        $self->_CloseParen( $args{SUBCLAUSE} );
     }
     elsif ( $op !~ /^[<>]=?$/ && (  blessed($cf) && $cf->Type eq 'IPAddressRange')) {
         my ($start_ip, $end_ip) = split /-/, $value;
-        
-        $self->_OpenParen;
+        $self->_OpenParen( $args{SUBCLAUSE} );
         if ( $op !~ /NOT|!=|<>/i ) { # positive equation
             $self->_LimitCustomField(
                 OPERATOR    => '<=',
@@ -513,17 +514,15 @@ sub _LimitCustomField {
             # estimations and scan less rows, but it's harder to do
             # as we have OR aggregator
         }
-        $self->_CloseParen;
+        $self->_CloseParen( $args{SUBCLAUSE} );
     } 
     elsif ( !$negative_op || $single_value ) {
         $cfkey .= '.'. $self->{'_sql_multiple_cfs_index'}++ if not $single_value and not $op =~ /^[<>]=?$/;
         my ($ocfvalias, $CFs) = $self->_CustomFieldJoin( $cfkey, $cf );
 
-        $self->_OpenParen;
-
-        $self->_OpenParen;
-
-        $self->_OpenParen;
+        $self->_OpenParen( $args{SUBCLAUSE} );
+        $self->_OpenParen( $args{SUBCLAUSE} );
+        $self->_OpenParen( $args{SUBCLAUSE} );
         # if column is defined then deal only with it
         # otherwise search in Content and in LargeContent
         if ( $column ) {
@@ -535,9 +534,9 @@ sub _LimitCustomField {
                 CASESENSITIVE => 0,
                 %args
             ) );
-            $self->_CloseParen;
-            $self->_CloseParen;
-            $self->_CloseParen;
+            $self->_CloseParen( $args{SUBCLAUSE} );
+            $self->_CloseParen( $args{SUBCLAUSE} );
+            $self->_CloseParen( $args{SUBCLAUSE} );
         }
         else {
             # need special treatment for Date
@@ -566,7 +565,7 @@ sub _LimitCustomField {
                     $date->AddDay;
                     my $dayend = $date->ISO;
 
-                    $self->_OpenParen;
+                    $self->_OpenParen( $args{SUBCLAUSE} );
 
                     $self->Limit(
                         ALIAS    => $ocfvalias,
@@ -585,7 +584,7 @@ sub _LimitCustomField {
                         ENTRYAGGREGATOR => 'AND',
                     );
 
-                    $self->_CloseParen;
+                    $self->_CloseParen( $args{SUBCLAUSE} );
                 }
             }
             elsif ( $op eq '=' || $op eq '!=' || $op eq '<>' ) {
@@ -600,28 +599,31 @@ sub _LimitCustomField {
                     );
                 }
                 else {
-                    $self->_OpenParen;
+                    $self->_OpenParen( $args{SUBCLAUSE} );
                     $self->Limit(
                         ALIAS           => $ocfvalias,
                         FIELD           => 'Content',
                         OPERATOR        => '=',
                         VALUE           => '',
-                        ENTRYAGGREGATOR => 'OR'
+                        ENTRYAGGREGATOR => 'OR',
+                        SUBCLAUSE       => $args{SUBCLAUSE},
                     );
                     $self->Limit(
                         ALIAS           => $ocfvalias,
                         FIELD           => 'Content',
                         OPERATOR        => 'IS',
                         VALUE           => 'NULL',
+                        SUBCLAUSE       => $args{SUBCLAUSE},
                         ENTRYAGGREGATOR => 'OR'
                     );
-                    $self->_CloseParen;
+                    $self->_CloseParen( $args{SUBCLAUSE} );
                     $self->Limit( $fix_op->(
                         ALIAS           => $ocfvalias,
                         FIELD           => 'LargeContent',
                         OPERATOR        => $op,
                         VALUE           => $value,
                         ENTRYAGGREGATOR => 'AND',
+                        SUBCLAUSE       => $args{SUBCLAUSE},
                         CASESENSITIVE => 0,
                     ) );
                 }
@@ -636,13 +638,14 @@ sub _LimitCustomField {
                     %args
                 );
 
-                $self->_OpenParen;
-                $self->_OpenParen;
+                $self->_OpenParen( $args{SUBCLAUSE} );
+                $self->_OpenParen( $args{SUBCLAUSE} );
                 $self->Limit(
                     ALIAS           => $ocfvalias,
                     FIELD           => 'Content',
                     OPERATOR        => '=',
                     VALUE           => '',
+                    SUBCLAUSE       => $args{SUBCLAUSE},
                     ENTRYAGGREGATOR => 'OR'
                 );
                 $self->Limit(
@@ -650,20 +653,22 @@ sub _LimitCustomField {
                     FIELD           => 'Content',
                     OPERATOR        => 'IS',
                     VALUE           => 'NULL',
+                    SUBCLAUSE       => $args{SUBCLAUSE},
                     ENTRYAGGREGATOR => 'OR'
                 );
-                $self->_CloseParen;
+                $self->_CloseParen( $args{SUBCLAUSE} );
                 $self->Limit( $fix_op->(
                     ALIAS           => $ocfvalias,
                     FIELD           => 'LargeContent',
                     OPERATOR        => $op,
                     VALUE           => $value,
                     ENTRYAGGREGATOR => 'AND',
+                    SUBCLAUSE       => $args{SUBCLAUSE},
                     CASESENSITIVE => 0,
                 ) );
-                $self->_CloseParen;
+                $self->_CloseParen( $args{SUBCLAUSE} );
             }
-            $self->_CloseParen;
+            $self->_CloseParen( $args{SUBCLAUSE} );
 
             # XXX: if we join via CustomFields table then
             # because of order of left joins we get NULLs in
@@ -684,7 +689,7 @@ sub _LimitCustomField {
                 QUOTEVALUE      => 0,
                 ENTRYAGGREGATOR => 'AND',
             ) if $CFs;
-            $self->_CloseParen;
+            $self->_CloseParen( $args{SUBCLAUSE} );
 
             if ($negative_op) {
                 $self->Limit(
@@ -697,7 +702,7 @@ sub _LimitCustomField {
                 );
             }
 
-            $self->_CloseParen;
+            $self->_CloseParen( $args{SUBCLAUSE} );
         }
     }
     else {
