@@ -125,12 +125,14 @@ sub _RoleGroupsJoin {
         ALIAS           => $groups,
         FIELD           => 'Domain',
         VALUE           => $args{'Class'} .'-Role',
+        CASESENSITIVE   => 1,
     );
     $self->Limit(
         LEFTJOIN        => $groups,
         ALIAS           => $groups,
         FIELD           => 'Type',
         VALUE           => $args{'Type'},
+        CASESENSITIVE   => 1,
     ) if $args{'Type'};
 
     $self->{'_sql_role_group_aliases'}{ $args{'Class'} .'-'. $args{'Type'} } = $groups

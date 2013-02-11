@@ -1457,6 +1457,7 @@ sub WatchedQueues {
                             ALIAS => $group_alias,
                             FIELD => 'Domain',
                             VALUE => 'RT::Queue-Role',
+                            CASESENSITIVE => 1,
                             ENTRYAGGREGATOR => 'AND',
                           );
     if (grep { $_ eq 'Cc' } @roles) {
@@ -1465,6 +1466,7 @@ sub WatchedQueues {
                                 ALIAS => $group_alias,
                                 FIELD => 'Type',
                                 VALUE => 'Cc',
+                                CASESENSITIVE => 1,
                                 ENTRYAGGREGATOR => 'OR',
                               );
     }
@@ -1474,6 +1476,7 @@ sub WatchedQueues {
                                 ALIAS => $group_alias,
                                 FIELD => 'Type',
                                 VALUE => 'AdminCc',
+                                CASESENSITIVE => 1,
                                 ENTRYAGGREGATOR => 'OR',
                               );
     }

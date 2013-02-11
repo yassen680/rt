@@ -3438,8 +3438,8 @@ sub GetPrincipalsMap {
                 ALIAS2 => $group_members,
                 FIELD2 => 'GroupId'
             );
-            $Users->Limit( ALIAS => $groups, FIELD => 'Domain', VALUE => 'ACLEquivalence' );
-            $Users->Limit( ALIAS => $groups, FIELD => 'Type', VALUE => 'UserEquiv' );
+            $Users->Limit( ALIAS => $groups, FIELD => 'Domain', VALUE => 'ACLEquivalence', CASESENSITIVE => 1 );
+            $Users->Limit( ALIAS => $groups, FIELD => 'Type', VALUE => 'UserEquiv', CASESENSITIVE => 1 );
 
 
             my $display = sub {
