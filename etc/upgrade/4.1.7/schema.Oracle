@@ -1,0 +1,4 @@
+DROP INDEX Groups1;
+DROP INDEX Groups2;
+CREATE INDEX Groups1 ON Groups (Domain, Instance, Type, id);
+CREATE INDEX Groups2 ON Groups (Type, Instance, Domain);

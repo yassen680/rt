@@ -88,8 +88,8 @@ CREATE TABLE Groups (
         LastUpdated     DATE
 --      Instance        VARCHAR2(64)
 );
-CREATE INDEX Groups1 ON Groups (LOWER(Domain), Instance, LOWER(Type), id);
-CREATE INDEX Groups2 ON Groups (LOWER(Type), Instance, LOWER(Domain));
+CREATE INDEX Groups1 ON Groups (Domain, Instance, Type, id);
+CREATE INDEX Groups2 ON Groups (Type, Instance, Domain);
 
 
 CREATE SEQUENCE SCRIPCONDITIONS_seq;
