@@ -166,7 +166,13 @@ sub Load {
 
 =head2 List
 
-Returns sorted list of the lifecycles' names.
+List available lifecycles. This list omits RT's default approvals
+lifecycle.
+
+Takes: An option parameter for lifecycle types other than tickets.
+       Defaults to 'ticket'.
+
+Returns: A sorted list of available lifecycles.
 
 =cut
 
@@ -174,9 +180,30 @@ sub List {
     my $self = shift;
     my $for = shift || 'ticket';
 
+    return grep { $_ ne 'approvals' } $self->ListAll( For => $for );
+}
+
+=head2 ListAll
+
+Returns a list of all lifecycles, including approvals.
+
+Takes: An option parameter for lifecycle types other than tickets.
+       Defaults to 'ticket'.
+
+Returns: A sorted list of all available lifecycles.
+
+=cut
+
+sub ListAll {
+    my $self = shift;
+    my %args = (
+        For => 'ticket',
+        @_
+    );
+
     $self->FillCache unless keys %LIFECYCLES_CACHE;
 
-    return sort grep {$LIFECYCLES_CACHE{$_}{type} eq $for}
+    return sort grep {$LIFECYCLES_CACHE{$_}{type} eq $args{'For'}}
         grep $_ ne '__maps__', keys %LIFECYCLES_CACHE;
 }
 
