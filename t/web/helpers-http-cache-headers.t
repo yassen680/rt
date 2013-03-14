@@ -6,6 +6,8 @@ use utf8;
 #      endpoints checking for the right headers.
 
 use File::Find;
+use Test::MockTime 'set_fixed_time';
+set_fixed_time(time());
 
 use RT::Test tests => undef;
 
@@ -54,11 +56,11 @@ diag "set up expected date headers";
   $expected = {
     Autocomplete => {
       'Cache-Control' => 'max-age=120, private',
-      'Expires'       => $autocomplete,
+      'Expires'       => $autocomplete->RFC2616,
     },
     default      => {
       'Cache-Control' => 'no-cache',
-      'Expires'       => $default,
+      'Expires'       => $default->RFC2616,
     },
   };
 }
@@ -74,23 +76,10 @@ foreach my $endpoint ( @endpoints ) {
       'got expected Cache-Control header'
   );
 
-#  tests only pass for this if test script runs in the same second
-#  is( $m->res->header('Expires') => $headers->{'Expires'} );
-
-  # parse header in to RT::Date object
-  my $date = RT::Date->new(RT->SystemUser);
-  $date->Set(
-      Format   => 'unknown',
-      Timezone => 'GMT',
-      Value    => $m->res->header('Expires'),
+  is(
+    $m->res->header('Expires') => $headers->{'Expires'},
+    'got expected Expires header'
   );
-
-  # date/time in header cannot be less than expected date
-  cmp_ok( $date->Unix, '>=', $headers->{'Expires'}->Unix, '>= expected time' );
-
-  # date/time in header cannot be more than 5 seconds past expected date
-  cmp_ok( $date->Unix, '<', $headers->{'Expires'}->Unix + 5, '< expected time+5' );
-
 }
 
 undef $m;
