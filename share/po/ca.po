@@ -61,7 +61,7 @@ msgstr "%1 %2 %3 %4:%5 %6"
 msgid "%1 %2 %3 %4:%5:%6 %7"
 msgstr "%1 %2 %3 %4:%5:%6 %7"
 
-#: lib/RT/Record.pm:1791 lib/RT/Transaction.pm:721 lib/RT/Transaction.pm:763
+#: lib/RT/Record.pm:1791 lib/RT/Transaction.pm:732 lib/RT/Transaction.pm:774
 #. ($cf->Name, $new_content)
 #. ($field, $new)
 #. ($self->Field, $principal->Object->Name)
@@ -73,13 +73,13 @@ msgstr "Afegit %1 %2"
 msgid "%1 %2 ago"
 msgstr "Fa %1 %2"
 
-#: lib/RT/Record.pm:1798 lib/RT/Transaction.pm:727
+#: lib/RT/Record.pm:1798 lib/RT/Transaction.pm:738
 #. ($cf->Name, $old_content, $new_content)
 #. ($field, $old, $new)
 msgid "%1 %2 changed to %3"
 msgstr "%1 %2 ha canviat a %3"
 
-#: lib/RT/Record.pm:1795 lib/RT/Transaction.pm:724 lib/RT/Transaction.pm:769
+#: lib/RT/Record.pm:1795 lib/RT/Transaction.pm:735 lib/RT/Transaction.pm:780
 #. ($cf->Name, $old_content)
 #. ($field, $old)
 #. ($self->Field, $principal->Object->Name)
@@ -214,14 +214,14 @@ msgstr "%1 apareix com a objecte local, però no s'ha pogut trobar dins la base 
 msgid "%1 appears to be fully initialized.  We won't need to create any tables or insert metadata, but you can continue to customize RT by clicking 'Customize Basics' below"
 msgstr "Senbla que %1 ja està completament inicialitzat. No hem de crear les taules ni les metadades de RT,  però pots continuar personalitzant RT clicant a 'Personalització Bàsica' a sota."
 
-#: lib/RT/Transaction.pm:597 share/html/Ticket/Elements/ShowDates:80 share/html/m/ticket/show:409
+#: lib/RT/Transaction.pm:608 share/html/Ticket/Elements/ShowDates:80 share/html/m/ticket/show:409
 #. ($Ticket->LastUpdatedAsString, $Ticket->LastUpdatedByObj->Name)
 #. ($Ticket->LastUpdatedAsString, $m->scomp('/Elements/ShowUser', User => $Ticket->LastUpdatedByObj))
 #. ($self->BriefDescription , $self->CreatorObj->Name)
 msgid "%1 by %2"
 msgstr "%1 per %2"
 
-#: lib/RT/Record.pm:514 lib/RT/Transaction.pm:657 lib/RT/Transaction.pm:856 lib/RT/Transaction.pm:861 lib/RT/Transaction.pm:875 lib/RT/Transaction.pm:884 lib/RT/Transaction.pm:922
+#: lib/RT/Record.pm:514 lib/RT/Transaction.pm:668 lib/RT/Transaction.pm:867 lib/RT/Transaction.pm:872 lib/RT/Transaction.pm:886 lib/RT/Transaction.pm:895 lib/RT/Transaction.pm:933
 #. ($self->loc($self->Field),                               ($self->OldValue? "'".$self->OldValue ."'" : $self->loc("(no value)")) , "'". $self->NewValue."'")
 #. ($self->loc($self->Field) , $q1->Name , $q2->Name)
 #. ($self->Field,                ( $self->OldValue ? "'" . $self->OldValue . "'" : $no_value ),                "'" . $self->NewValue . "'")
@@ -230,8 +230,9 @@ msgstr "%1 per %2"
 msgid "%1 changed from %2 to %3"
 msgstr "%1 canviat de %2 a %3"
 
-#: share/html/Admin/CustomFields/Modify.html:218
+#: share/html/Admin/CustomFields/Modify.html:210 share/html/Admin/CustomFields/Modify.html:226
 #. (loc("Render Type"), $original, $RenderType)
+#. (loc("Field values source"), $original, $ValuesClass)
 msgid "%1 changed from '%2' to '%3'"
 msgstr "S'ha modificat %1 de '%2' a '%3'"
 
@@ -254,17 +255,17 @@ msgstr "Configuració principal de %1"
 msgid "%1 could not be set to %2."
 msgstr "No s'ha pogut posar %1 com a %2."
 
-#: lib/RT/Transaction.pm:624
+#: lib/RT/Transaction.pm:635
 #. ($obj_type)
 msgid "%1 created"
 msgstr "%1 creat"
 
-#: lib/RT/Transaction.pm:635
+#: lib/RT/Transaction.pm:646
 #. ($obj_type)
 msgid "%1 deleted"
 msgstr "%1 eliminat"
 
-#: lib/RT/Transaction.pm:630
+#: lib/RT/Transaction.pm:641
 #. ($obj_type)
 msgid "%1 disabled"
 msgstr "S'ha inhabilitat %1"
@@ -274,7 +275,7 @@ msgstr "S'ha inhabilitat %1"
 msgid "%1 doesn't exist."
 msgstr "%1 no existeix"
 
-#: lib/RT/Transaction.pm:627
+#: lib/RT/Transaction.pm:638
 #. ($obj_type)
 msgid "%1 enabled"
 msgstr "S'ha habilitat %1"
@@ -413,7 +414,7 @@ msgstr "Taulers de %1"
 msgid "%1's saved searches"
 msgstr "cerques guardades de %1"
 
-#: lib/RT/Transaction.pm:539
+#: lib/RT/Transaction.pm:550
 #. ($self)
 msgid "%1: no attachment specified"
 msgstr "%1: no s'ha especificat cap adjunt"
@@ -569,7 +570,7 @@ msgstr "(sense nom)"
 msgid "(no pubkey!)"
 msgstr "(no hi ha clau pública!)"
 
-#: lib/RT/Transaction.pm:650 share/html/Admin/Elements/AddCustomFieldValue:72 share/html/Admin/Elements/EditCustomFieldValues:78 share/html/Admin/Elements/SelectRights:77 share/html/Admin/Tools/Shredder/Elements/Object/RT--Attachment:51 share/html/Admin/Tools/Shredder/Elements/SelectPlugin:55 share/html/Articles/Article/Elements/SearchByCustomField:56 share/html/Elements/EditCustomFieldSelect:116 share/html/Elements/EditCustomFieldSelect:90 share/html/Elements/EditCustomFieldSelect:99 share/html/Elements/SelectCustomFieldValue:53 share/html/Elements/ShowCustomFields:59 share/html/Search/Elements/Chart:121 share/html/Search/Elements/Chart:82 share/html/m/ticket/show:268
+#: lib/RT/Transaction.pm:661 share/html/Admin/Elements/AddCustomFieldValue:72 share/html/Admin/Elements/EditCustomFieldValues:78 share/html/Admin/Elements/SelectRights:77 share/html/Admin/Tools/Shredder/Elements/Object/RT--Attachment:51 share/html/Admin/Tools/Shredder/Elements/SelectPlugin:55 share/html/Articles/Article/Elements/SearchByCustomField:56 share/html/Elements/EditCustomFieldSelect:116 share/html/Elements/EditCustomFieldSelect:90 share/html/Elements/EditCustomFieldSelect:99 share/html/Elements/SelectCustomFieldValue:53 share/html/Elements/ShowCustomFields:59 share/html/Search/Elements/Chart:121 share/html/Search/Elements/Chart:82 share/html/m/ticket/show:268
 msgid "(no value)"
 msgstr "(sense valor)"
 
@@ -1114,7 +1115,7 @@ msgstr "Fitxer adjunt"
 msgid "Attachment '%1' could not be loaded"
 msgstr "No s'ha pogut carregar el fitxer adjunt '%1'"
 
-#: lib/RT/Transaction.pm:547
+#: lib/RT/Transaction.pm:558
 msgid "Attachment created"
 msgstr "Fitxer adjunt creat"
 
@@ -1442,7 +1443,7 @@ msgstr "Comentaris (no s'envien als sol·licitants)"
 msgid "Comments about this user"
 msgstr "Comentaris sobre aquest usuari"
 
-#: lib/RT/Transaction.pm:703
+#: lib/RT/Transaction.pm:714
 msgid "Comments added"
 msgstr "Comentaris afegits"
 
@@ -1518,7 +1519,7 @@ msgstr "Adreça de correspondència"
 msgid "Correspondence"
 msgstr "Correspondència"
 
-#: lib/RT/Transaction.pm:699
+#: lib/RT/Transaction.pm:710
 msgid "Correspondence added"
 msgstr "Correspondència afegida"
 
@@ -2176,7 +2177,7 @@ msgstr "No s'ha trobat el valor de camp personalitzat"
 msgid "Custom field value deleted"
 msgstr "S'ha esborrat el valor de camp personalitzat"
 
-#: lib/RT/Tickets.pm:146 lib/RT/Transaction.pm:707 share/html/Elements/SelectGroups:54 share/html/Elements/SelectUsers:54
+#: lib/RT/Tickets.pm:146 lib/RT/Transaction.pm:718 share/html/Elements/SelectGroups:54 share/html/Elements/SelectUsers:54
 msgid "CustomField"
 msgstr "CustomField"
 
@@ -2319,7 +2320,7 @@ msgstr "Plantilla de transacció per defecte"
 msgid "Default: %1"
 msgstr "Per defecte: %1"
 
-#: lib/RT/Transaction.pm:685
+#: lib/RT/Transaction.pm:696
 #. ($type,        $self->Field,        (            $self->OldValue            ? "'" . $self->OldValue . "'"            : $self->loc("(no value)")        ),        "'" . $self->NewValue . "'")
 msgid "Default: %1/%2 changed from %3 to %4"
 msgstr "Per defecte: %1/%2 ha canviat de %3 a %4"
@@ -2436,22 +2437,22 @@ msgstr "Depenen de per"
 msgid "DependedOnBy"
 msgstr "DependedOnBy"
 
-#: lib/RT/Transaction.pm:790
+#: lib/RT/Transaction.pm:801
 #. ($value)
 msgid "Dependency by %1 added"
 msgstr "Dependència per %1 afegida"
 
-#: lib/RT/Transaction.pm:829
+#: lib/RT/Transaction.pm:840
 #. ($value)
 msgid "Dependency by %1 deleted"
 msgstr "Dependència per %1 esborrada"
 
-#: lib/RT/Transaction.pm:787
+#: lib/RT/Transaction.pm:798
 #. ($value)
 msgid "Dependency on %1 added"
 msgstr "Dependència de %1 afegida"
 
-#: lib/RT/Transaction.pm:826
+#: lib/RT/Transaction.pm:837
 #. ($value)
 msgid "Dependency on %1 deleted"
 msgstr "Dependència de %1 esborrada"
@@ -2832,7 +2833,7 @@ msgstr "Introdueix fins a %1 valors amb autocompletat"
 msgid "Entering %1, %2, %3, or %4 limits results to tickets with one of the respective types of statuses.  Any individual status name limits results to just the statuses named."
 msgstr "Introduint %1, %2, %3 o %4 es limiten els resultats als tiquets amb un dels respectius tipus d'estat. Qualsevol nom d'estat individual limita els resultats només als estats anomenats."
 
-#: sbin/rt-email-digest:103 share/html/Elements/Login:54 share/html/Install/Elements/Errors:49 share/html/SelfService/Error.html:48 share/html/SelfService/Error.html:49 share/html/m/_elements/login:56
+#: sbin/rt-email-digest:103 share/html/Elements/Login:54 share/html/Install/Elements/Errors:49 share/html/SelfService/Error.html:48 share/html/SelfService/Error.html:49 share/html/m/_elements/login:57
 msgid "Error"
 msgstr "S'ha produït un error"
 
@@ -3126,12 +3127,12 @@ msgstr "Reassigna la transacció #%1"
 msgid "ForwardMessage"
 msgstr "ForwardMessage"
 
-#: lib/RT/Transaction.pm:668
+#: lib/RT/Transaction.pm:679
 #. ($self->Data)
 msgid "Forwarded Ticket to %1"
 msgstr "Tiquet transferit a %1"
 
-#: lib/RT/Transaction.pm:665
+#: lib/RT/Transaction.pm:676
 #. ($self->Field, $self->Data)
 msgid "Forwarded Transaction #%1 to %2"
 msgstr "Transacció #%1 transferida a %2"
@@ -3182,7 +3183,7 @@ msgstr "Crear plantilla des de fitxer"
 msgid "Getting started"
 msgstr "Com començar"
 
-#: lib/RT/Transaction.pm:757 lib/RT/Transaction.pm:897 lib/RT/Transaction.pm:909
+#: lib/RT/Transaction.pm:768 lib/RT/Transaction.pm:908 lib/RT/Transaction.pm:920
 #. ($New->Name)
 msgid "Given to %1"
 msgstr "Assignat a %1"
@@ -3965,7 +3966,7 @@ msgstr "Sessió iniciada com a %1"
 msgid "Logged out"
 msgstr "Desconnectat"
 
-#: share/html/Elements/Login:49 share/html/Elements/Login:62 share/html/Elements/Login:91 share/html/m/_elements/login:62 share/html/m/_elements/login:77
+#: share/html/Elements/Login:49 share/html/Elements/Login:62 share/html/Elements/Login:91 share/html/m/_elements/login:65 share/html/m/_elements/login:80
 msgid "Login"
 msgstr "Inicia sessió"
 
@@ -4095,12 +4096,12 @@ msgstr "Jo"
 msgid "Member"
 msgstr "Membre"
 
-#: lib/RT/Transaction.pm:803
+#: lib/RT/Transaction.pm:814
 #. ($value)
 msgid "Member %1 added"
 msgstr "S'ha afegit el membre %1"
 
-#: lib/RT/Transaction.pm:842
+#: lib/RT/Transaction.pm:853
 #. ($value)
 msgid "Member %1 deleted"
 msgstr "S'ha esborrat el membre %1"
@@ -4130,12 +4131,12 @@ msgstr "MemberOf"
 msgid "Members"
 msgstr "Membres"
 
-#: lib/RT/Transaction.pm:800
+#: lib/RT/Transaction.pm:811
 #. ($value)
 msgid "Membership in %1 added"
 msgstr "S'ha afegit la pertinença a %1"
 
-#: lib/RT/Transaction.pm:839
+#: lib/RT/Transaction.pm:850
 #. ($value)
 msgid "Membership in %1 deleted"
 msgstr "S'ha esborrat la pertinença a %1"
@@ -4165,7 +4166,7 @@ msgstr "Error al fusionar. No s'ha pogut establir l'estat"
 msgid "Merge into"
 msgstr "Fusiona dins de"
 
-#: lib/RT/Transaction.pm:806
+#: lib/RT/Transaction.pm:817
 #. ($value)
 msgid "Merged into %1"
 msgstr "S'ha fusionat dins de %1"
@@ -4443,6 +4444,10 @@ msgstr "Modifica l'usuari %1"
 #: share/html/Articles/Article/Search.html:78
 msgid "Modify this search..."
 msgstr "Modifica aquesta cerca..."
+
+#: share/html/Ticket/Elements/ShowRequestor:135
+msgid "Modify this user"
+msgstr ""
 
 #: share/html/Ticket/ModifyAll.html:58
 #. ($Ticket->Id)
@@ -4918,7 +4923,7 @@ msgstr "No existeix la clau o no és vàlida per firmar"
 msgid "No tickets found."
 msgstr "No s'han trobat tiquets."
 
-#: lib/RT/Transaction.pm:594 lib/RT/Transaction.pm:618
+#: lib/RT/Transaction.pm:605 lib/RT/Transaction.pm:629
 msgid "No transaction type specified"
 msgstr "No s'ha especificat el tipus de transacció"
 
@@ -5106,7 +5111,7 @@ msgstr "Fora de línia"
 msgid "Offline upload"
 msgstr "Càrrega fora de línia"
 
-#: lib/RT/Transaction.pm:384
+#: lib/RT/Transaction.pm:400
 #. ($self->CreatedAsString, $self->CreatorObj->Name)
 msgid "On %1, %2 wrote:"
 msgstr "Sobre %1, %2 ha escrit:"
@@ -5242,11 +5247,11 @@ msgstr "Organització"
 msgid "Originating ticket: #%1"
 msgstr "Tiquet orígen: #%1"
 
-#: lib/RT/Transaction.pm:691
+#: lib/RT/Transaction.pm:702
 msgid "Outgoing email about a comment recorded"
 msgstr "Correu sortint sobre un comentari registrat"
 
-#: lib/RT/Transaction.pm:695
+#: lib/RT/Transaction.pm:706
 msgid "Outgoing email recorded"
 msgstr "Correu sortint registrat"
 
@@ -5288,7 +5293,7 @@ msgstr "S'ha canviat el propietari de %1 a %2"
 msgid "Owner could not be set."
 msgstr "No s'ha pogut establir el propietari"
 
-#: lib/RT/Transaction.pm:745 lib/RT/Transaction.pm:915
+#: lib/RT/Transaction.pm:756 lib/RT/Transaction.pm:926
 #. ($Old->Name , $New->Name)
 #. ($Old->Name, $New->Name)
 msgid "Owner forcibly changed from %1 to %2"
@@ -5322,7 +5327,7 @@ msgstr "Telèfon del cercapersones"
 msgid "Parents"
 msgstr "Pares"
 
-#: share/html/Elements/Login:75 share/html/User/Prefs.html:117 share/html/m/_elements/login:74
+#: share/html/Elements/Login:75 share/html/User/Prefs.html:117 share/html/m/_elements/login:77
 msgid "Password"
 msgstr "﻿Contrasenya"
 
@@ -5330,7 +5335,7 @@ msgstr "﻿Contrasenya"
 msgid "Password Reminder"
 msgstr "Recordatori de contrasenya"
 
-#: lib/RT/Transaction.pm:867 lib/RT/User.pm:862
+#: lib/RT/Transaction.pm:878 lib/RT/User.pm:862
 msgid "Password changed"
 msgstr "S'ha canviat la contrasenya"
 
@@ -5401,7 +5406,7 @@ msgstr "Ordre de cerca de la libreria Perl"
 msgid "Permanently wipeout data from RT"
 msgstr "Esborrar permanentment tota la informació de RT"
 
-#: lib/RT/ACE.pm:249 lib/RT/ACE.pm:255 lib/RT/ACE.pm:332 lib/RT/Article.pm:112 lib/RT/Article.pm:266 lib/RT/Article.pm:371 lib/RT/Article.pm:388 lib/RT/Article.pm:416 lib/RT/Article.pm:468 lib/RT/Article.pm:492 lib/RT/Article.pm:576 lib/RT/Attachment.pm:712 lib/RT/Attachment.pm:713 lib/RT/Attachment.pm:774 lib/RT/Attachment.pm:775 lib/RT/Attribute.pm:166 lib/RT/Attribute.pm:172 lib/RT/Attribute.pm:379 lib/RT/Attribute.pm:388 lib/RT/Attribute.pm:401 lib/RT/Class.pm:202 lib/RT/Class.pm:237 lib/RT/Class.pm:390 lib/RT/Class.pm:440 lib/RT/CurrentUser.pm:138 lib/RT/CurrentUser.pm:144 lib/RT/CurrentUser.pm:150 lib/RT/CustomField.pm:1374 lib/RT/CustomField.pm:1420 lib/RT/CustomField.pm:1463 lib/RT/CustomField.pm:1603 lib/RT/CustomField.pm:1744 lib/RT/CustomField.pm:312 lib/RT/CustomField.pm:329 lib/RT/CustomField.pm:340 lib/RT/CustomField.pm:549 lib/RT/CustomField.pm:576 lib/RT/CustomField.pm:964 lib/RT/CustomFieldValue.pm:147 lib/RT/CustomFieldValue.pm:89 lib/RT/Group.pm:1060 lib/RT/Group.pm:1112 lib/RT/Group.pm:397 lib/RT/Group.pm:496 lib/RT/Group.pm:655 lib/RT/Group.pm:885 lib/RT/ObjectClass.pm:70 lib/RT/Queue.pm:1234 lib/RT/Queue.pm:200 lib/RT/Queue.pm:218 lib/RT/Queue.pm:577 lib/RT/Queue.pm:603 lib/RT/Queue.pm:629 lib/RT/Queue.pm:854 lib/RT/Scrip.pm:122 lib/RT/Scrip.pm:130 lib/RT/Scrip.pm:141 lib/RT/Scrip.pm:203 lib/RT/Scrip.pm:509 lib/RT/Scrip.pm:517 lib/RT/Scrip.pm:526 lib/RT/Scrip.pm:531 lib/RT/Scrip.pm:539 lib/RT/Template.pm:106 lib/RT/Template.pm:116 lib/RT/Template.pm:121 lib/RT/Template.pm:240 lib/RT/Template.pm:245 lib/RT/Template.pm:254 lib/RT/Template.pm:281 lib/RT/Template.pm:411 lib/RT/Template.pm:636 lib/RT/Template.pm:653 lib/RT/Template.pm:671 lib/RT/Ticket.pm:1072 lib/RT/Ticket.pm:1078 lib/RT/Ticket.pm:1085 lib/RT/Ticket.pm:1231 lib/RT/Ticket.pm:1241 lib/RT/Ticket.pm:1255 lib/RT/Ticket.pm:1350 lib/RT/Ticket.pm:1697 lib/RT/Ticket.pm:1955 lib/RT/Ticket.pm:2122 lib/RT/Ticket.pm:2172 lib/RT/Ticket.pm:2463 lib/RT/Ticket.pm:2476 lib/RT/Ticket.pm:2555 lib/RT/Ticket.pm:2568 lib/RT/Ticket.pm:2668 lib/RT/Ticket.pm:2682 lib/RT/Ticket.pm:2941 lib/RT/Ticket.pm:2952 lib/RT/Ticket.pm:2958 lib/RT/Ticket.pm:3167 lib/RT/Ticket.pm:3241 lib/RT/Ticket.pm:3471 lib/RT/Topic.pm:113 lib/RT/Topic.pm:141 lib/RT/Topic.pm:207 lib/RT/Transaction.pm:590 lib/RT/Transaction.pm:612 lib/RT/User.pm:1095 lib/RT/User.pm:134 lib/RT/User.pm:1511 lib/RT/User.pm:1634 lib/RT/User.pm:323 lib/RT/User.pm:730 lib/RT/User.pm:765 share/html/Articles/Article/Display.html:82 share/html/Articles/Article/Elements/ShowHistory:68 share/html/Articles/Article/PreCreate.html:61 share/html/SelfService/Article/Display.html:64 share/html/Ticket/Forward.html:84
+#: lib/RT/ACE.pm:249 lib/RT/ACE.pm:255 lib/RT/ACE.pm:332 lib/RT/Article.pm:112 lib/RT/Article.pm:266 lib/RT/Article.pm:371 lib/RT/Article.pm:388 lib/RT/Article.pm:416 lib/RT/Article.pm:468 lib/RT/Article.pm:492 lib/RT/Article.pm:576 lib/RT/Attachment.pm:712 lib/RT/Attachment.pm:713 lib/RT/Attachment.pm:774 lib/RT/Attachment.pm:775 lib/RT/Attribute.pm:166 lib/RT/Attribute.pm:172 lib/RT/Attribute.pm:379 lib/RT/Attribute.pm:388 lib/RT/Attribute.pm:401 lib/RT/Class.pm:202 lib/RT/Class.pm:237 lib/RT/Class.pm:390 lib/RT/Class.pm:440 lib/RT/CurrentUser.pm:138 lib/RT/CurrentUser.pm:144 lib/RT/CurrentUser.pm:150 lib/RT/CustomField.pm:1374 lib/RT/CustomField.pm:1420 lib/RT/CustomField.pm:1463 lib/RT/CustomField.pm:1603 lib/RT/CustomField.pm:1744 lib/RT/CustomField.pm:312 lib/RT/CustomField.pm:329 lib/RT/CustomField.pm:340 lib/RT/CustomField.pm:549 lib/RT/CustomField.pm:576 lib/RT/CustomField.pm:964 lib/RT/CustomFieldValue.pm:147 lib/RT/CustomFieldValue.pm:89 lib/RT/Group.pm:1060 lib/RT/Group.pm:1112 lib/RT/Group.pm:397 lib/RT/Group.pm:496 lib/RT/Group.pm:655 lib/RT/Group.pm:885 lib/RT/ObjectClass.pm:70 lib/RT/Queue.pm:1234 lib/RT/Queue.pm:200 lib/RT/Queue.pm:218 lib/RT/Queue.pm:577 lib/RT/Queue.pm:603 lib/RT/Queue.pm:629 lib/RT/Queue.pm:854 lib/RT/Scrip.pm:122 lib/RT/Scrip.pm:130 lib/RT/Scrip.pm:141 lib/RT/Scrip.pm:203 lib/RT/Scrip.pm:509 lib/RT/Scrip.pm:517 lib/RT/Scrip.pm:526 lib/RT/Scrip.pm:531 lib/RT/Scrip.pm:539 lib/RT/Template.pm:106 lib/RT/Template.pm:116 lib/RT/Template.pm:121 lib/RT/Template.pm:240 lib/RT/Template.pm:245 lib/RT/Template.pm:254 lib/RT/Template.pm:281 lib/RT/Template.pm:411 lib/RT/Template.pm:636 lib/RT/Template.pm:653 lib/RT/Template.pm:671 lib/RT/Ticket.pm:1072 lib/RT/Ticket.pm:1078 lib/RT/Ticket.pm:1085 lib/RT/Ticket.pm:1231 lib/RT/Ticket.pm:1241 lib/RT/Ticket.pm:1255 lib/RT/Ticket.pm:1350 lib/RT/Ticket.pm:1697 lib/RT/Ticket.pm:1955 lib/RT/Ticket.pm:2122 lib/RT/Ticket.pm:2172 lib/RT/Ticket.pm:2463 lib/RT/Ticket.pm:2476 lib/RT/Ticket.pm:2555 lib/RT/Ticket.pm:2568 lib/RT/Ticket.pm:2668 lib/RT/Ticket.pm:2682 lib/RT/Ticket.pm:2941 lib/RT/Ticket.pm:2952 lib/RT/Ticket.pm:2958 lib/RT/Ticket.pm:3167 lib/RT/Ticket.pm:3241 lib/RT/Ticket.pm:3471 lib/RT/Topic.pm:113 lib/RT/Topic.pm:141 lib/RT/Topic.pm:207 lib/RT/Transaction.pm:601 lib/RT/Transaction.pm:623 lib/RT/User.pm:1095 lib/RT/User.pm:134 lib/RT/User.pm:1511 lib/RT/User.pm:1634 lib/RT/User.pm:323 lib/RT/User.pm:730 lib/RT/User.pm:765 share/html/Articles/Article/Display.html:82 share/html/Articles/Article/Elements/ShowHistory:68 share/html/Articles/Article/PreCreate.html:61 share/html/SelfService/Article/Display.html:64 share/html/Ticket/Forward.html:84
 msgid "Permission Denied"
 msgstr "S'ha denegat el permís"
 
@@ -5710,7 +5715,7 @@ msgstr "Variables de nucli de RT"
 msgid "RT couldn't store your session."
 msgstr "El RT no ha pogut desar la teva sessió."
 
-#: share/html/Elements/Logo:61 share/html/m/_elements/header:49 share/html/m/_elements/login:52 share/html/m/index.html:48
+#: share/html/Elements/Logo:61 share/html/m/_elements/header:49 share/html/m/_elements/login:53 share/html/m/index.html:48
 #. (RT->Config->Get('rtname'))
 msgid "RT for %1"
 msgstr "RT per a %1"
@@ -5790,22 +5795,22 @@ msgstr "Membre recursiu"
 msgid "Refer to"
 msgstr "Fa referència a"
 
-#: lib/RT/Transaction.pm:797
+#: lib/RT/Transaction.pm:808
 #. ($value)
 msgid "Reference by %1 added"
 msgstr "S'ha afegit la referència per a %1"
 
-#: lib/RT/Transaction.pm:836
+#: lib/RT/Transaction.pm:847
 #. ($value)
 msgid "Reference by %1 deleted"
 msgstr "S'ha esborra la referència per a %1"
 
-#: lib/RT/Transaction.pm:794
+#: lib/RT/Transaction.pm:805
 #. ($value)
 msgid "Reference to %1 added"
 msgstr "S'ha afegit la referència a %1"
 
-#: lib/RT/Transaction.pm:833
+#: lib/RT/Transaction.pm:844
 #. ($value)
 msgid "Reference to %1 deleted"
 msgstr "S'ha esborrat la referència a %1"
@@ -5895,18 +5900,18 @@ msgstr "Recorda la cua per defecte"
 msgid "Reminder"
 msgstr "Recordatori"
 
-#: lib/RT/Interface/Web.pm:2575 lib/RT/Transaction.pm:933
+#: lib/RT/Interface/Web.pm:2575 lib/RT/Transaction.pm:944
 #. ($args->{'NewReminder-Subject'})
 #. ($ticket->Subject)
 msgid "Reminder '%1' added"
 msgstr "S'ha afegit el recordatori '%1'"
 
-#: lib/RT/Transaction.pm:946
+#: lib/RT/Transaction.pm:957
 #. ($ticket->Subject)
 msgid "Reminder '%1' completed"
 msgstr "S'ha completat el recordatori '%1'"
 
-#: lib/RT/Transaction.pm:939
+#: lib/RT/Transaction.pm:950
 #. ($ticket->Subject)
 msgid "Reminder '%1' reopened"
 msgstr "S'ha reobert el recordatori '%1'"
@@ -6816,7 +6821,7 @@ msgstr "L'estat '%1' no és un estat vàlid per als tiquets d'aquesta cua."
 msgid "Status Change"
 msgstr "Canvia l'estat"
 
-#: lib/RT/Transaction.pm:643
+#: lib/RT/Transaction.pm:654
 #. ("'" . $self->loc( $self->OldValue ) . "'",                        "'" . $self->loc( $self->NewValue ) . "'")
 msgid "Status changed from %1 to %2"
 msgstr "S'ha canviat l'estat de %1 a %2"
@@ -6848,7 +6853,7 @@ msgstr "StealTicket"
 msgid "Step %1 of %2"
 msgstr "Pas %1 de %2"
 
-#: lib/RT/Transaction.pm:751 lib/RT/Transaction.pm:902
+#: lib/RT/Transaction.pm:762 lib/RT/Transaction.pm:913
 #. ($Old->Name)
 msgid "Stolen from %1"
 msgstr "Robat a %1"
@@ -6865,7 +6870,7 @@ msgstr "Assumpte"
 msgid "Subject Tag"
 msgstr "Etiqueta de l'assumpte"
 
-#: lib/RT/Transaction.pm:773
+#: lib/RT/Transaction.pm:784
 #. ($self->Data)
 msgid "Subject changed to %1"
 msgstr "S'ha canviat l'assumpte a %1"
@@ -6958,7 +6963,7 @@ msgstr "Error del sistema: %1"
 msgid "System Tools"
 msgstr "Eines del sistema"
 
-#: lib/RT/Transaction.pm:661
+#: lib/RT/Transaction.pm:672
 msgid "System error"
 msgstr "Error del sistema"
 
@@ -6982,7 +6987,7 @@ msgstr "Assignar-me els tiquets"
 msgid "TakeTicket"
 msgstr "TakeTicket"
 
-#: lib/RT/Transaction.pm:736 lib/RT/Transaction.pm:894
+#: lib/RT/Transaction.pm:747 lib/RT/Transaction.pm:905
 msgid "Taken"
 msgstr "Assignades"
 
@@ -7509,7 +7514,7 @@ msgstr "Total"
 msgid "Transaction"
 msgstr "Transacció"
 
-#: lib/RT/Transaction.pm:927
+#: lib/RT/Transaction.pm:938
 #. ($self->Data)
 msgid "Transaction %1 purged"
 msgstr "Transacció %1 purgada"
@@ -7530,7 +7535,7 @@ msgstr "Transacció->Crea no ha pogut, ja que no has especificat un tipus d'obje
 msgid "TransactionDate"
 msgstr "TransactionDate"
 
-#: lib/RT/Transaction.pm:984
+#: lib/RT/Transaction.pm:995
 msgid "Transactions are immutable"
 msgstr "Les transaccions són immutables"
 
@@ -7692,7 +7697,7 @@ msgstr "Objectes no sel·leccionats"
 msgid "Unset private key"
 msgstr "Desassigna la clau privada"
 
-#: lib/RT/Transaction.pm:732 lib/RT/Transaction.pm:906
+#: lib/RT/Transaction.pm:743 lib/RT/Transaction.pm:917
 msgid "Untaken"
 msgstr "No assignat"
 
@@ -7902,7 +7907,7 @@ msgstr "S'ha carregat l'usuari"
 msgid "User-defined groups"
 msgstr "Grups definits per l'usuari"
 
-#: share/html/Admin/Users/Modify.html:67 share/html/Elements/Login:70 share/html/Ticket/Elements/AddWatchers:58 share/html/m/_elements/login:70
+#: share/html/Admin/Users/Modify.html:67 share/html/Elements/Login:70 share/html/Ticket/Elements/AddWatchers:58 share/html/m/_elements/login:73
 msgid "Username"
 msgstr "Nom d'usuari"
 
@@ -8342,7 +8347,7 @@ msgstr "[Amunt]"
 msgid "[none]"
 msgstr "[cap]"
 
-#: lib/RT/Transaction.pm:714
+#: lib/RT/Transaction.pm:725
 msgid "a custom field"
 msgstr "un camp personalitzat"
 

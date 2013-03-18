@@ -84,7 +84,7 @@ msgstr "%1 %3 %2 %6 %4.%5"
 msgid "%1 %2 %3 %4:%5:%6 %7"
 msgstr "%1, %3 %2 %7 kl. %4.%5.%6"
 
-#: lib/RT/Record.pm:1791 lib/RT/Transaction.pm:721 lib/RT/Transaction.pm:763
+#: lib/RT/Record.pm:1791 lib/RT/Transaction.pm:732 lib/RT/Transaction.pm:774
 #. ($cf->Name, $new_content)
 #. ($field, $new)
 #. ($self->Field, $principal->Object->Name)
@@ -96,13 +96,13 @@ msgstr "%1 %2 tillagt"
 msgid "%1 %2 ago"
 msgstr "%1 %2 sedan"
 
-#: lib/RT/Record.pm:1798 lib/RT/Transaction.pm:727
+#: lib/RT/Record.pm:1798 lib/RT/Transaction.pm:738
 #. ($cf->Name, $old_content, $new_content)
 #. ($field, $old, $new)
 msgid "%1 %2 changed to %3"
 msgstr "%1 %2 ändrat till %3"
 
-#: lib/RT/Record.pm:1795 lib/RT/Transaction.pm:724 lib/RT/Transaction.pm:769
+#: lib/RT/Record.pm:1795 lib/RT/Transaction.pm:735 lib/RT/Transaction.pm:780
 #. ($cf->Name, $old_content)
 #. ($field, $old)
 #. ($self->Field, $principal->Object->Name)
@@ -257,14 +257,14 @@ msgstr "%1 tycks vara ett lokalt objekt men går inte att hitta i databasen"
 msgid "%1 appears to be fully initialized.  We won't need to create any tables or insert metadata, but you can continue to customize RT by clicking 'Customize Basics' below"
 msgstr ""
 
-#: lib/RT/Transaction.pm:597 share/html/Ticket/Elements/ShowDates:80 share/html/m/ticket/show:409
+#: lib/RT/Transaction.pm:608 share/html/Ticket/Elements/ShowDates:80 share/html/m/ticket/show:409
 #. ($Ticket->LastUpdatedAsString, $Ticket->LastUpdatedByObj->Name)
 #. ($Ticket->LastUpdatedAsString, $m->scomp('/Elements/ShowUser', User => $Ticket->LastUpdatedByObj))
 #. ($self->BriefDescription , $self->CreatorObj->Name)
 msgid "%1 by %2"
 msgstr "%1 av %2"
 
-#: lib/RT/Record.pm:514 lib/RT/Transaction.pm:657 lib/RT/Transaction.pm:856 lib/RT/Transaction.pm:861 lib/RT/Transaction.pm:875 lib/RT/Transaction.pm:884 lib/RT/Transaction.pm:922
+#: lib/RT/Record.pm:514 lib/RT/Transaction.pm:668 lib/RT/Transaction.pm:867 lib/RT/Transaction.pm:872 lib/RT/Transaction.pm:886 lib/RT/Transaction.pm:895 lib/RT/Transaction.pm:933
 #. ($self->loc($self->Field),                               ($self->OldValue? "'".$self->OldValue ."'" : $self->loc("(no value)")) , "'". $self->NewValue."'")
 #. ($self->loc($self->Field) , $q1->Name , $q2->Name)
 #. ($self->Field,                ( $self->OldValue ? "'" . $self->OldValue . "'" : $no_value ),                "'" . $self->NewValue . "'")
@@ -273,8 +273,9 @@ msgstr "%1 av %2"
 msgid "%1 changed from %2 to %3"
 msgstr "%1 ändrat från %2 till %3"
 
-#: share/html/Admin/CustomFields/Modify.html:218
+#: share/html/Admin/CustomFields/Modify.html:210 share/html/Admin/CustomFields/Modify.html:226
 #. (loc("Render Type"), $original, $RenderType)
+#. (loc("Field values source"), $original, $ValuesClass)
 msgid "%1 changed from '%2' to '%3'"
 msgstr "%1 ändrades från '%2' till '%3'"
 
@@ -301,17 +302,17 @@ msgstr "%1 kunde inte anges till %2."
 msgid "%1 couldn't set status to resolved. RT's Database may be inconsistent."
 msgstr "%1 kunde inte sätta status till åtgärdat. RT-databasen kan vara inkonsekvent."
 
-#: lib/RT/Transaction.pm:624
+#: lib/RT/Transaction.pm:635
 #. ($obj_type)
 msgid "%1 created"
 msgstr "%1 skapad"
 
-#: lib/RT/Transaction.pm:635
+#: lib/RT/Transaction.pm:646
 #. ($obj_type)
 msgid "%1 deleted"
 msgstr "%1 raderad"
 
-#: lib/RT/Transaction.pm:630
+#: lib/RT/Transaction.pm:641
 #. ($obj_type)
 msgid "%1 disabled"
 msgstr "%1 avaktiverad"
@@ -321,7 +322,7 @@ msgstr "%1 avaktiverad"
 msgid "%1 doesn't exist."
 msgstr "%1 existerar inte."
 
-#: lib/RT/Transaction.pm:627
+#: lib/RT/Transaction.pm:638
 #. ($obj_type)
 msgid "%1 enabled"
 msgstr "%1 aktiverad"
@@ -476,7 +477,7 @@ msgstr "Dashboard som används av %1"
 msgid "%1's saved searches"
 msgstr "%1:s sparade sökningar"
 
-#: lib/RT/Transaction.pm:539
+#: lib/RT/Transaction.pm:550
 #. ($self)
 msgid "%1: no attachment specified"
 msgstr "%1: inga bifogade filer angivna"
@@ -656,7 +657,7 @@ msgstr "(namnlös)"
 msgid "(no pubkey!)"
 msgstr "(ingen publik nyckel!)"
 
-#: lib/RT/Transaction.pm:650 share/html/Admin/Elements/AddCustomFieldValue:72 share/html/Admin/Elements/EditCustomFieldValues:78 share/html/Admin/Elements/SelectRights:77 share/html/Admin/Tools/Shredder/Elements/Object/RT--Attachment:51 share/html/Admin/Tools/Shredder/Elements/SelectPlugin:55 share/html/Articles/Article/Elements/SearchByCustomField:56 share/html/Elements/EditCustomFieldSelect:116 share/html/Elements/EditCustomFieldSelect:90 share/html/Elements/EditCustomFieldSelect:99 share/html/Elements/SelectCustomFieldValue:53 share/html/Elements/ShowCustomFields:59 share/html/Search/Elements/Chart:121 share/html/Search/Elements/Chart:82 share/html/m/ticket/show:268
+#: lib/RT/Transaction.pm:661 share/html/Admin/Elements/AddCustomFieldValue:72 share/html/Admin/Elements/EditCustomFieldValues:78 share/html/Admin/Elements/SelectRights:77 share/html/Admin/Tools/Shredder/Elements/Object/RT--Attachment:51 share/html/Admin/Tools/Shredder/Elements/SelectPlugin:55 share/html/Articles/Article/Elements/SearchByCustomField:56 share/html/Elements/EditCustomFieldSelect:116 share/html/Elements/EditCustomFieldSelect:90 share/html/Elements/EditCustomFieldSelect:99 share/html/Elements/SelectCustomFieldValue:53 share/html/Elements/ShowCustomFields:59 share/html/Search/Elements/Chart:121 share/html/Search/Elements/Chart:82 share/html/m/ticket/show:268
 msgid "(no value)"
 msgstr "(inget värde)"
 
@@ -1293,7 +1294,7 @@ msgstr "Bilaga"
 msgid "Attachment '%1' could not be loaded"
 msgstr "Bifogad fil '%1' kunde inte läsas in"
 
-#: lib/RT/Transaction.pm:547
+#: lib/RT/Transaction.pm:558
 msgid "Attachment created"
 msgstr "Bifogad fil skapad"
 
@@ -1689,7 +1690,7 @@ msgstr "Kommentarer (ej skickade till anmälare)"
 msgid "Comments about this user"
 msgstr "Kommentarer om denna användare"
 
-#: lib/RT/Transaction.pm:703
+#: lib/RT/Transaction.pm:714
 msgid "Comments added"
 msgstr "Kommentarer tillagda"
 
@@ -1781,7 +1782,7 @@ msgstr "CorrespondAddress"
 msgid "Correspondence"
 msgstr "Brevväxling"
 
-#: lib/RT/Transaction.pm:699
+#: lib/RT/Transaction.pm:710
 msgid "Correspondence added"
 msgstr "Brevväxling"
 
@@ -2527,7 +2528,7 @@ msgstr "Extrafält går ej att hitta"
 msgid "Custom field value deleted"
 msgstr "Extrafältvärde raderat"
 
-#: lib/RT/Tickets.pm:146 lib/RT/Transaction.pm:707 share/html/Elements/SelectGroups:54 share/html/Elements/SelectUsers:54
+#: lib/RT/Tickets.pm:146 lib/RT/Transaction.pm:718 share/html/Elements/SelectGroups:54 share/html/Elements/SelectUsers:54
 msgid "CustomField"
 msgstr "ExtraFält"
 
@@ -2682,7 +2683,7 @@ msgstr "Förvald transaktionsmall"
 msgid "Default: %1"
 msgstr "Förval: %1"
 
-#: lib/RT/Transaction.pm:685
+#: lib/RT/Transaction.pm:696
 #. ($type,        $self->Field,        (            $self->OldValue            ? "'" . $self->OldValue . "'"            : $self->loc("(no value)")        ),        "'" . $self->NewValue . "'")
 msgid "Default: %1/%2 changed from %3 to %4"
 msgstr "Förval: %1/%2 ändrat från %3 till %4"
@@ -2827,22 +2828,22 @@ msgstr "Förutsätts av"
 msgid "DependedOnBy"
 msgstr "FörutsättsAv"
 
-#: lib/RT/Transaction.pm:790
+#: lib/RT/Transaction.pm:801
 #. ($value)
 msgid "Dependency by %1 added"
 msgstr "Lagt till att förutsätts av %1"
 
-#: lib/RT/Transaction.pm:829
+#: lib/RT/Transaction.pm:840
 #. ($value)
 msgid "Dependency by %1 deleted"
 msgstr "Tagit bort att förutsätts av %1"
 
-#: lib/RT/Transaction.pm:787
+#: lib/RT/Transaction.pm:798
 #. ($value)
 msgid "Dependency on %1 added"
 msgstr "Lagt till att förutsätter %1"
 
-#: lib/RT/Transaction.pm:826
+#: lib/RT/Transaction.pm:837
 #. ($value)
 msgid "Dependency on %1 deleted"
 msgstr "Tagit bort att förutsätter %1"
@@ -3271,7 +3272,7 @@ msgstr ""
 msgid "Entering %1, %2, %3, or %4 limits results to tickets with one of the respective types of statuses.  Any individual status name limits results to just the statuses named."
 msgstr ""
 
-#: sbin/rt-email-digest:103 share/html/Elements/Login:54 share/html/Install/Elements/Errors:49 share/html/SelfService/Error.html:48 share/html/SelfService/Error.html:49 share/html/m/_elements/login:56
+#: sbin/rt-email-digest:103 share/html/Elements/Login:54 share/html/Install/Elements/Errors:49 share/html/SelfService/Error.html:48 share/html/SelfService/Error.html:49 share/html/m/_elements/login:57
 msgid "Error"
 msgstr "Fel"
 
@@ -3605,12 +3606,12 @@ msgstr "Vidarebefordra transaktion #%1"
 msgid "ForwardMessage"
 msgstr ""
 
-#: lib/RT/Transaction.pm:668
+#: lib/RT/Transaction.pm:679
 #. ($self->Data)
 msgid "Forwarded Ticket to %1"
 msgstr "Vidarebefordra ärende till %1"
 
-#: lib/RT/Transaction.pm:665
+#: lib/RT/Transaction.pm:676
 #. ($self->Field, $self->Data)
 msgid "Forwarded Transaction #%1 to %2"
 msgstr ""
@@ -3669,7 +3670,7 @@ msgstr "Hämta mall från fil"
 msgid "Getting started"
 msgstr "Komma igång"
 
-#: lib/RT/Transaction.pm:757 lib/RT/Transaction.pm:897 lib/RT/Transaction.pm:909
+#: lib/RT/Transaction.pm:768 lib/RT/Transaction.pm:908 lib/RT/Transaction.pm:920
 #. ($New->Name)
 msgid "Given to %1"
 msgstr "Har givits till %1"
@@ -4532,7 +4533,7 @@ msgstr "Inloggad som %1"
 msgid "Logged out"
 msgstr ""
 
-#: share/html/Elements/Login:49 share/html/Elements/Login:62 share/html/Elements/Login:91 share/html/m/_elements/login:62 share/html/m/_elements/login:77
+#: share/html/Elements/Login:49 share/html/Elements/Login:62 share/html/Elements/Login:91 share/html/m/_elements/login:65 share/html/m/_elements/login:80
 msgid "Login"
 msgstr "Logga in"
 
@@ -4674,12 +4675,12 @@ msgstr ""
 msgid "Member"
 msgstr ""
 
-#: lib/RT/Transaction.pm:803
+#: lib/RT/Transaction.pm:814
 #. ($value)
 msgid "Member %1 added"
 msgstr "Medlem %1 tillagd"
 
-#: lib/RT/Transaction.pm:842
+#: lib/RT/Transaction.pm:853
 #. ($value)
 msgid "Member %1 deleted"
 msgstr "Medlem %1 raderad"
@@ -4709,12 +4710,12 @@ msgstr ""
 msgid "Members"
 msgstr "Medlemmar"
 
-#: lib/RT/Transaction.pm:800
+#: lib/RT/Transaction.pm:811
 #. ($value)
 msgid "Membership in %1 added"
 msgstr "Medlemskap i %1 tillagt"
 
-#: lib/RT/Transaction.pm:839
+#: lib/RT/Transaction.pm:850
 #. ($value)
 msgid "Membership in %1 deleted"
 msgstr "Medlemskap i %1 raderat"
@@ -4744,7 +4745,7 @@ msgstr "Sammanslagning misslyckades. Kunde inte sätta status"
 msgid "Merge into"
 msgstr "Slå samman med"
 
-#: lib/RT/Transaction.pm:806
+#: lib/RT/Transaction.pm:817
 #. ($value)
 msgid "Merged into %1"
 msgstr "Sammanslagen med %1"
@@ -5081,6 +5082,10 @@ msgstr "Modifiera användaren %1"
 
 #: share/html/Articles/Article/Search.html:78
 msgid "Modify this search..."
+msgstr ""
+
+#: share/html/Ticket/Elements/ShowRequestor:135
+msgid "Modify this user"
 msgstr ""
 
 #: share/html/Ticket/ModifyAll.html:58
@@ -5613,7 +5618,7 @@ msgstr ""
 msgid "No tickets found."
 msgstr "Inga ärenden funna."
 
-#: lib/RT/Transaction.pm:594 lib/RT/Transaction.pm:618
+#: lib/RT/Transaction.pm:605 lib/RT/Transaction.pm:629
 msgid "No transaction type specified"
 msgstr "Ingen transaktionstyp specificerad"
 
@@ -5837,7 +5842,7 @@ msgstr "Offline-redigeringar"
 msgid "Offline upload"
 msgstr "Offline upload"
 
-#: lib/RT/Transaction.pm:384
+#: lib/RT/Transaction.pm:400
 #. ($self->CreatedAsString, $self->CreatorObj->Name)
 msgid "On %1, %2 wrote:"
 msgstr "Vid %1, skrev %2:"
@@ -5977,11 +5982,11 @@ msgstr "Organisation"
 msgid "Originating ticket: #%1"
 msgstr "Ursprungligt ärende: #%1"
 
-#: lib/RT/Transaction.pm:691
+#: lib/RT/Transaction.pm:702
 msgid "Outgoing email about a comment recorded"
 msgstr "Utgående e-postmeddelande om en kommentar har sparats"
 
-#: lib/RT/Transaction.pm:695
+#: lib/RT/Transaction.pm:706
 msgid "Outgoing email recorded"
 msgstr "Utgående e-postmeddelande har sparats"
 
@@ -6023,7 +6028,7 @@ msgstr ""
 msgid "Owner could not be set."
 msgstr "Ägare kan inte anges."
 
-#: lib/RT/Transaction.pm:745 lib/RT/Transaction.pm:915
+#: lib/RT/Transaction.pm:756 lib/RT/Transaction.pm:926
 #. ($Old->Name , $New->Name)
 #. ($Old->Name, $New->Name)
 msgid "Owner forcibly changed from %1 to %2"
@@ -6061,7 +6066,7 @@ msgstr ""
 msgid "Parents"
 msgstr "Föräldrar"
 
-#: share/html/Elements/Login:75 share/html/User/Prefs.html:117 share/html/m/_elements/login:74
+#: share/html/Elements/Login:75 share/html/User/Prefs.html:117 share/html/m/_elements/login:77
 msgid "Password"
 msgstr "Lösenord"
 
@@ -6069,7 +6074,7 @@ msgstr "Lösenord"
 msgid "Password Reminder"
 msgstr "Lösenordpåminnelse"
 
-#: lib/RT/Transaction.pm:867 lib/RT/User.pm:862
+#: lib/RT/Transaction.pm:878 lib/RT/User.pm:862
 msgid "Password changed"
 msgstr "Lösenord ändrat"
 
@@ -6144,7 +6149,7 @@ msgstr ""
 msgid "Permanently wipeout data from RT"
 msgstr ""
 
-#: lib/RT/ACE.pm:249 lib/RT/ACE.pm:255 lib/RT/ACE.pm:332 lib/RT/Article.pm:112 lib/RT/Article.pm:266 lib/RT/Article.pm:371 lib/RT/Article.pm:388 lib/RT/Article.pm:416 lib/RT/Article.pm:468 lib/RT/Article.pm:492 lib/RT/Article.pm:576 lib/RT/Attachment.pm:712 lib/RT/Attachment.pm:713 lib/RT/Attachment.pm:774 lib/RT/Attachment.pm:775 lib/RT/Attribute.pm:166 lib/RT/Attribute.pm:172 lib/RT/Attribute.pm:379 lib/RT/Attribute.pm:388 lib/RT/Attribute.pm:401 lib/RT/Class.pm:202 lib/RT/Class.pm:237 lib/RT/Class.pm:390 lib/RT/Class.pm:440 lib/RT/CurrentUser.pm:138 lib/RT/CurrentUser.pm:144 lib/RT/CurrentUser.pm:150 lib/RT/CustomField.pm:1374 lib/RT/CustomField.pm:1420 lib/RT/CustomField.pm:1463 lib/RT/CustomField.pm:1603 lib/RT/CustomField.pm:1744 lib/RT/CustomField.pm:312 lib/RT/CustomField.pm:329 lib/RT/CustomField.pm:340 lib/RT/CustomField.pm:549 lib/RT/CustomField.pm:576 lib/RT/CustomField.pm:964 lib/RT/CustomFieldValue.pm:147 lib/RT/CustomFieldValue.pm:89 lib/RT/Group.pm:1060 lib/RT/Group.pm:1112 lib/RT/Group.pm:397 lib/RT/Group.pm:496 lib/RT/Group.pm:655 lib/RT/Group.pm:885 lib/RT/ObjectClass.pm:70 lib/RT/Queue.pm:1234 lib/RT/Queue.pm:200 lib/RT/Queue.pm:218 lib/RT/Queue.pm:577 lib/RT/Queue.pm:603 lib/RT/Queue.pm:629 lib/RT/Queue.pm:854 lib/RT/Scrip.pm:122 lib/RT/Scrip.pm:130 lib/RT/Scrip.pm:141 lib/RT/Scrip.pm:203 lib/RT/Scrip.pm:509 lib/RT/Scrip.pm:517 lib/RT/Scrip.pm:526 lib/RT/Scrip.pm:531 lib/RT/Scrip.pm:539 lib/RT/Template.pm:106 lib/RT/Template.pm:116 lib/RT/Template.pm:121 lib/RT/Template.pm:240 lib/RT/Template.pm:245 lib/RT/Template.pm:254 lib/RT/Template.pm:281 lib/RT/Template.pm:411 lib/RT/Template.pm:636 lib/RT/Template.pm:653 lib/RT/Template.pm:671 lib/RT/Ticket.pm:1072 lib/RT/Ticket.pm:1078 lib/RT/Ticket.pm:1085 lib/RT/Ticket.pm:1231 lib/RT/Ticket.pm:1241 lib/RT/Ticket.pm:1255 lib/RT/Ticket.pm:1350 lib/RT/Ticket.pm:1697 lib/RT/Ticket.pm:1955 lib/RT/Ticket.pm:2122 lib/RT/Ticket.pm:2172 lib/RT/Ticket.pm:2463 lib/RT/Ticket.pm:2476 lib/RT/Ticket.pm:2555 lib/RT/Ticket.pm:2568 lib/RT/Ticket.pm:2668 lib/RT/Ticket.pm:2682 lib/RT/Ticket.pm:2941 lib/RT/Ticket.pm:2952 lib/RT/Ticket.pm:2958 lib/RT/Ticket.pm:3167 lib/RT/Ticket.pm:3241 lib/RT/Ticket.pm:3471 lib/RT/Topic.pm:113 lib/RT/Topic.pm:141 lib/RT/Topic.pm:207 lib/RT/Transaction.pm:590 lib/RT/Transaction.pm:612 lib/RT/User.pm:1095 lib/RT/User.pm:134 lib/RT/User.pm:1511 lib/RT/User.pm:1634 lib/RT/User.pm:323 lib/RT/User.pm:730 lib/RT/User.pm:765 share/html/Articles/Article/Display.html:82 share/html/Articles/Article/Elements/ShowHistory:68 share/html/Articles/Article/PreCreate.html:61 share/html/SelfService/Article/Display.html:64 share/html/Ticket/Forward.html:84
+#: lib/RT/ACE.pm:249 lib/RT/ACE.pm:255 lib/RT/ACE.pm:332 lib/RT/Article.pm:112 lib/RT/Article.pm:266 lib/RT/Article.pm:371 lib/RT/Article.pm:388 lib/RT/Article.pm:416 lib/RT/Article.pm:468 lib/RT/Article.pm:492 lib/RT/Article.pm:576 lib/RT/Attachment.pm:712 lib/RT/Attachment.pm:713 lib/RT/Attachment.pm:774 lib/RT/Attachment.pm:775 lib/RT/Attribute.pm:166 lib/RT/Attribute.pm:172 lib/RT/Attribute.pm:379 lib/RT/Attribute.pm:388 lib/RT/Attribute.pm:401 lib/RT/Class.pm:202 lib/RT/Class.pm:237 lib/RT/Class.pm:390 lib/RT/Class.pm:440 lib/RT/CurrentUser.pm:138 lib/RT/CurrentUser.pm:144 lib/RT/CurrentUser.pm:150 lib/RT/CustomField.pm:1374 lib/RT/CustomField.pm:1420 lib/RT/CustomField.pm:1463 lib/RT/CustomField.pm:1603 lib/RT/CustomField.pm:1744 lib/RT/CustomField.pm:312 lib/RT/CustomField.pm:329 lib/RT/CustomField.pm:340 lib/RT/CustomField.pm:549 lib/RT/CustomField.pm:576 lib/RT/CustomField.pm:964 lib/RT/CustomFieldValue.pm:147 lib/RT/CustomFieldValue.pm:89 lib/RT/Group.pm:1060 lib/RT/Group.pm:1112 lib/RT/Group.pm:397 lib/RT/Group.pm:496 lib/RT/Group.pm:655 lib/RT/Group.pm:885 lib/RT/ObjectClass.pm:70 lib/RT/Queue.pm:1234 lib/RT/Queue.pm:200 lib/RT/Queue.pm:218 lib/RT/Queue.pm:577 lib/RT/Queue.pm:603 lib/RT/Queue.pm:629 lib/RT/Queue.pm:854 lib/RT/Scrip.pm:122 lib/RT/Scrip.pm:130 lib/RT/Scrip.pm:141 lib/RT/Scrip.pm:203 lib/RT/Scrip.pm:509 lib/RT/Scrip.pm:517 lib/RT/Scrip.pm:526 lib/RT/Scrip.pm:531 lib/RT/Scrip.pm:539 lib/RT/Template.pm:106 lib/RT/Template.pm:116 lib/RT/Template.pm:121 lib/RT/Template.pm:240 lib/RT/Template.pm:245 lib/RT/Template.pm:254 lib/RT/Template.pm:281 lib/RT/Template.pm:411 lib/RT/Template.pm:636 lib/RT/Template.pm:653 lib/RT/Template.pm:671 lib/RT/Ticket.pm:1072 lib/RT/Ticket.pm:1078 lib/RT/Ticket.pm:1085 lib/RT/Ticket.pm:1231 lib/RT/Ticket.pm:1241 lib/RT/Ticket.pm:1255 lib/RT/Ticket.pm:1350 lib/RT/Ticket.pm:1697 lib/RT/Ticket.pm:1955 lib/RT/Ticket.pm:2122 lib/RT/Ticket.pm:2172 lib/RT/Ticket.pm:2463 lib/RT/Ticket.pm:2476 lib/RT/Ticket.pm:2555 lib/RT/Ticket.pm:2568 lib/RT/Ticket.pm:2668 lib/RT/Ticket.pm:2682 lib/RT/Ticket.pm:2941 lib/RT/Ticket.pm:2952 lib/RT/Ticket.pm:2958 lib/RT/Ticket.pm:3167 lib/RT/Ticket.pm:3241 lib/RT/Ticket.pm:3471 lib/RT/Topic.pm:113 lib/RT/Topic.pm:141 lib/RT/Topic.pm:207 lib/RT/Transaction.pm:601 lib/RT/Transaction.pm:623 lib/RT/User.pm:1095 lib/RT/User.pm:134 lib/RT/User.pm:1511 lib/RT/User.pm:1634 lib/RT/User.pm:323 lib/RT/User.pm:730 lib/RT/User.pm:765 share/html/Articles/Article/Display.html:82 share/html/Articles/Article/Elements/ShowHistory:68 share/html/Articles/Article/PreCreate.html:61 share/html/SelfService/Article/Display.html:64 share/html/Ticket/Forward.html:84
 msgid "Permission Denied"
 msgstr "Tillgång nekas"
 
@@ -6489,7 +6494,7 @@ msgstr ""
 msgid "RT couldn't store your session."
 msgstr "RT har inte utrymme för din session."
 
-#: share/html/Elements/Logo:61 share/html/m/_elements/header:49 share/html/m/_elements/login:52 share/html/m/index.html:48
+#: share/html/Elements/Logo:61 share/html/m/_elements/header:49 share/html/m/_elements/login:53 share/html/m/index.html:48
 #. (RT->Config->Get('rtname'))
 msgid "RT for %1"
 msgstr "RT för %1"
@@ -6577,22 +6582,22 @@ msgstr ""
 msgid "Refer to"
 msgstr ""
 
-#: lib/RT/Transaction.pm:797
+#: lib/RT/Transaction.pm:808
 #. ($value)
 msgid "Reference by %1 added"
 msgstr "Referens från %1 tillagd"
 
-#: lib/RT/Transaction.pm:836
+#: lib/RT/Transaction.pm:847
 #. ($value)
 msgid "Reference by %1 deleted"
 msgstr "Referens från %1 raderad"
 
-#: lib/RT/Transaction.pm:794
+#: lib/RT/Transaction.pm:805
 #. ($value)
 msgid "Reference to %1 added"
 msgstr "Referens till %1 tillagd"
 
-#: lib/RT/Transaction.pm:833
+#: lib/RT/Transaction.pm:844
 #. ($value)
 msgid "Reference to %1 deleted"
 msgstr "Referens till %1 raderad"
@@ -6682,18 +6687,18 @@ msgstr ""
 msgid "Reminder"
 msgstr ""
 
-#: lib/RT/Interface/Web.pm:2575 lib/RT/Transaction.pm:933
+#: lib/RT/Interface/Web.pm:2575 lib/RT/Transaction.pm:944
 #. ($args->{'NewReminder-Subject'})
 #. ($ticket->Subject)
 msgid "Reminder '%1' added"
 msgstr "Påminnelse '%1' tillagd"
 
-#: lib/RT/Transaction.pm:946
+#: lib/RT/Transaction.pm:957
 #. ($ticket->Subject)
 msgid "Reminder '%1' completed"
 msgstr "Påminnelse '%1' genomförd"
 
-#: lib/RT/Transaction.pm:939
+#: lib/RT/Transaction.pm:950
 #. ($ticket->Subject)
 msgid "Reminder '%1' reopened"
 msgstr "Påminnelse '%1' öppnad igen"
@@ -7743,7 +7748,7 @@ msgstr ""
 msgid "Status Change"
 msgstr "Statusändring"
 
-#: lib/RT/Transaction.pm:643
+#: lib/RT/Transaction.pm:654
 #. ("'" . $self->loc( $self->OldValue ) . "'",                        "'" . $self->loc( $self->NewValue ) . "'")
 msgid "Status changed from %1 to %2"
 msgstr "Status ändrad från %1 till %2"
@@ -7775,7 +7780,7 @@ msgstr "StjälÄrende"
 msgid "Step %1 of %2"
 msgstr ""
 
-#: lib/RT/Transaction.pm:751 lib/RT/Transaction.pm:902
+#: lib/RT/Transaction.pm:762 lib/RT/Transaction.pm:913
 #. ($Old->Name)
 msgid "Stolen from %1"
 msgstr "Stulen från %1"
@@ -7796,7 +7801,7 @@ msgstr "Ämne"
 msgid "Subject Tag"
 msgstr "Ämnesetikett"
 
-#: lib/RT/Transaction.pm:773
+#: lib/RT/Transaction.pm:784
 #. ($self->Data)
 msgid "Subject changed to %1"
 msgstr "Ämne ändrat till %1"
@@ -7901,7 +7906,7 @@ msgstr "Systemfel: %1"
 msgid "System Tools"
 msgstr "Systemverktyg"
 
-#: lib/RT/Transaction.pm:661
+#: lib/RT/Transaction.pm:672
 msgid "System error"
 msgstr ""
 
@@ -7937,7 +7942,7 @@ msgstr "Ta ärenden"
 msgid "TakeTicket"
 msgstr "TaÄrende"
 
-#: lib/RT/Transaction.pm:736 lib/RT/Transaction.pm:894
+#: lib/RT/Transaction.pm:747 lib/RT/Transaction.pm:905
 msgid "Taken"
 msgstr "Taget"
 
@@ -8532,7 +8537,7 @@ msgstr "Totalt"
 msgid "Transaction"
 msgstr "Transaktion"
 
-#: lib/RT/Transaction.pm:927
+#: lib/RT/Transaction.pm:938
 #. ($self->Data)
 msgid "Transaction %1 purged"
 msgstr "Transaktion %1 har tömts"
@@ -8553,7 +8558,7 @@ msgstr "Transaktion->Skapa gick inte eftersom du inte specificerade en objekttyp
 msgid "TransactionDate"
 msgstr ""
 
-#: lib/RT/Transaction.pm:984
+#: lib/RT/Transaction.pm:995
 msgid "Transactions are immutable"
 msgstr "Transaktioner är oföränderliga"
 
@@ -8723,7 +8728,7 @@ msgstr "Ej valda objekt"
 msgid "Unset private key"
 msgstr ""
 
-#: lib/RT/Transaction.pm:732 lib/RT/Transaction.pm:906
+#: lib/RT/Transaction.pm:743 lib/RT/Transaction.pm:917
 msgid "Untaken"
 msgstr "Ej tagen"
 
@@ -8933,7 +8938,7 @@ msgstr "Användare har lästs in"
 msgid "User-defined groups"
 msgstr "Användardefinierade grupper"
 
-#: share/html/Admin/Users/Modify.html:67 share/html/Elements/Login:70 share/html/Ticket/Elements/AddWatchers:58 share/html/m/_elements/login:70
+#: share/html/Admin/Users/Modify.html:67 share/html/Elements/Login:70 share/html/Ticket/Elements/AddWatchers:58 share/html/m/_elements/login:73
 msgid "Username"
 msgstr "Användarnamn"
 
@@ -9413,7 +9418,7 @@ msgstr "[Ner]"
 msgid "[none]"
 msgstr "[ingen]"
 
-#: lib/RT/Transaction.pm:714
+#: lib/RT/Transaction.pm:725
 msgid "a custom field"
 msgstr ""
 
