@@ -396,7 +396,7 @@ sub BuildEmail {
                 Type         => $mimetype,
                 Encoding     => $encoding,
                 Disposition  => 'inline',
-                Name         => $filename,
+                Name         => RT::Interface::Email::EncodeToMIME( String => $filename ),
                 'Content-Id' => $cid_of{$uri},
             );
 
@@ -413,7 +413,7 @@ sub BuildEmail {
     my $entity = MIME::Entity->build(
         From    => $args{From},
         To      => $args{To},
-        Subject => $args{Subject},
+        Subject => RT::Interface::Email::EncodeToMIME( String => $args{Subject} ),
         Type    => "multipart/mixed",
     );
 
