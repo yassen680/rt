@@ -62,7 +62,9 @@ If we're changing the owner return true, otherwise return false
 
 sub IsApplicable {
     my $self = shift;
-    if ( ( $self->TransactionObj->Field || '' ) eq 'Owner' ) {
+    if ( ( $self->TransactionObj->Field || '' ) eq 'Owner'
+        and ($self->TransactionObj->ObjectType ne "RT::Ticket"
+             or $self->TransactionObj->Type ne "SetWatcher" )) {
         return(1);
     }
     else {
