@@ -204,7 +204,7 @@ foreach my $action ( @actions ) {
 sub action_create {
     my %args = @_;
     my $dbh = get_system_dbh();
-    my ($status, $msg) = RT::Handle->CheckCompatibility( $dbh, 'pre' );
+    my ($status, $msg) = RT::Handle->CheckCompatibility( $dbh, 'create' );
     return ($status, $msg) unless $status;
 
     print "Now creating a $db_type database $db_name for RT.\n";
