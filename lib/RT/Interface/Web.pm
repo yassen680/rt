@@ -1864,18 +1864,21 @@ sub CreateTicket {
         Interface => RT::Interface::Web::MobileClient() ? 'Mobile' : 'Web',
     );
 
-    if ( $ARGS{'Attachments'} ) {
-        my $rv = $MIMEObj->make_multipart;
-        $RT::Logger->error("Couldn't make multipart message")
-            if !$rv || $rv !~ /^(?:DONE|ALREADY)$/;
+    my @attachments;
+    if ( my $tmp = $session{'Attachments'} ) {
+        push @attachments, grep $_, values %$tmp;
 
-        foreach ( values %{ $ARGS{'Attachments'} } ) {
-            unless ($_) {
-                $RT::Logger->error("Couldn't add empty attachemnt");
-                next;
-            }
-            $MIMEObj->add_part($_);
-        }
+        delete $session{'Attachments'}
+            unless $ARGS{'KeepAttachments'};
+        $session{'Attachments'} = $session{'Attachments'}
+            if @attachments;
+    }
+    if ( $ARGS{'Attachments'} ) {
+        push @attachments, grep $_, values %{ $ARGS{'Attachments'} };
+    }
+    if ( @attachments ) {
+        $MIMEObj->make_multipart;
+        $MIMEObj->add_part( $_ ) foreach @attachments;
     }
 
     for my $argument (qw(Encrypt Sign)) {
@@ -1991,10 +1994,17 @@ sub ProcessUpdateMessage {
         @_
     );
 
-    if ( $args{ARGSRef}->{'UpdateAttachments'}
-        && !keys %{ $args{ARGSRef}->{'UpdateAttachments'} } )
-    {
-        delete $args{ARGSRef}->{'UpdateAttachments'};
+    my @attachments;
+    if ( my $tmp = $session{'Attachments'} ) {
+        push @attachments, grep $_, values %$tmp;
+
+        delete $session{'Attachments'}
+            unless $args{'KeepAttachments'};
+        $session{'Attachments'} = $session{'Attachments'}
+            if @attachments;
+    }
+    if ( $args{ARGSRef}{'UpdateAttachments'} ) {
+        push @attachments, grep $_, values %{ $args{ARGSRef}{'UpdateAttachments'} };
     }
 
     # Strip the signature
@@ -2008,7 +2018,7 @@ sub ProcessUpdateMessage {
     # If, after stripping the signature, we have no message, move the
     # UpdateTimeWorked into adjusted TimeWorked, so that a later
     # ProcessBasics can deal -- then bail out.
-    if (    not $args{ARGSRef}->{'UpdateAttachments'}
+    if (    not @attachments
         and not length $args{ARGSRef}->{'UpdateContent'} )
     {
         if ( $args{ARGSRef}->{'UpdateTimeWorked'} ) {
@@ -2045,9 +2055,9 @@ sub ProcessUpdateMessage {
         );
     }
 
-    if ( $args{ARGSRef}->{'UpdateAttachments'} ) {
+    if ( @attachments ) {
         $Message->make_multipart;
-        $Message->add_part($_) foreach values %{ $args{ARGSRef}->{'UpdateAttachments'} };
+        $Message->add_part( $_ ) foreach @attachments;
     }
 
     if ( $args{ARGSRef}->{'AttachTickets'} ) {
@@ -2134,7 +2144,36 @@ sub _ProcessUpdateMessageRecipients {
     }
 }
 
+sub ProcessAttachments {
+    my %args = (
+        ARGSRef => {},
+        @_
+    );
 
+    my $update_session = 0;
+
+    # deal with deleting uploaded attachments
+    if ( my $del = $args{'ARGSRef'}{'DeleteAttach'} ) {
+        delete $session{'Attachments'}{ $_ }
+            foreach ref $del? @$del : ($del);
+
+        $update_session = 1;
+    }
+
+    # store the uploaded attachment in session
+    my $new = $args{'ARGSRef'}{'Attach'};
+    if ( defined $new && length $new ) {
+        my $attachment = MakeMIMEEntity(
+            AttachmentFieldName => 'Attach'
+        );
+
+        my $file_path = Encode::decode_utf8("$new");
+        $session{'Attachments'}{ $file_path } = $attachment;
+
+        $update_session = 1;
+    }
+    $session{'Attachments'} = $session{'Attachments'} if $update_session;
+}
 
 =head2 MakeMIMEEntity PARAMHASH
 
