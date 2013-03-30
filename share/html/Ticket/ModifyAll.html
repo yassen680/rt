@@ -54,6 +54,7 @@
 <form method="post" action="ModifyAll.html" name="TicketModifyAll" enctype="multipart/form-data">
 % $m->callback( CallbackName => 'FormStart', ARGSRef => \%ARGS );
 <input type="hidden" class="hidden" name="id" value="<%$Ticket->Id%>" />
+<input type="hidden" class="hidden" name="Token" value="<% $Token %>" />
 
 <&| /Widgets/TitleBox, title => loc('Modify ticket # [_1]', $Ticket->Id), class=>'ticket-info-basics' &>
 <& Elements/EditBasics, TicketObj => $Ticket, defaults => \%ARGS &>
@@ -146,8 +147,9 @@ $CanRespond = 1 if ( $Ticket->CurrentUserHasRight('ReplyToTicket') or
 $CanComment = 1 if ( $Ticket->CurrentUserHasRight('CommentOnTicket') or
                      $Ticket->CurrentUserHasRight('ModifyTicket') );
 
+$ARGS{'Token'} ||= $Token ||= Digest::MD5::md5_hex( rand(1024) );
 
-ProcessAttachments( ARGSRef => \%ARGS );
+ProcessAttachments( ARGSRef => \%ARGS, Token => $Token );
 
 my @results;
 my $skip_update = 0;
@@ -212,6 +214,7 @@ unless ($Ticket->CurrentUserHasRight('ShowTicket')) {
 
 
 <%ARGS>
+$Token => undef
 $OnlySearchForPeople => undef
 $OnlySearchForGroup => undef
 $UserField => undef

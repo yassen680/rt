@@ -96,7 +96,7 @@ my @id = ( ref $id eq 'ARRAY' ) ? @{$id} : ($id);
 
 my $Ticket = RT::Ticket->new( $session{'CurrentUser'} );
 
-ProcessAttachments( ARGSRef => \%ARGS );
+ProcessAttachments( Token => $Token, ARGSRef => \%ARGS );
 
 if ( ($id[0]||'') eq 'new' ) {
 
@@ -161,4 +161,5 @@ $m->callback(CallbackName => 'BeforeDisplay', Ticket => \$Ticket, ARGSRef => \%A
 
 <%ARGS>
 $id => undef
+$Token => ''
 </%ARGS>

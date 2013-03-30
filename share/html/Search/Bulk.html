@@ -50,7 +50,7 @@
 
 <& /Elements/ListActions, actions => \@results &>
 <form method="post" action="<% RT->Config->Get('WebPath') %>/Search/Bulk.html" enctype="multipart/form-data" name="BulkUpdate" id="BulkUpdate">
-% foreach my $var (qw(Query Format OrderBy Order Rows Page SavedChartSearchId)) {
+% foreach my $var (qw(Query Format OrderBy Order Rows Page SavedChartSearchId Token)) {
 <input type="hidden" class="hidden" name="<%$var%>" value="<%$ARGS{$var} || ''%>" />
 %}
 <& /Elements/CollectionList, 
@@ -226,8 +226,9 @@ map ( $ARGS{$_} =~ /^$/ && ( delete $ARGS{$_} ), keys %ARGS );
 
 my (@results);
 
+$ARGS{'Token'} ||= $Token ||= Digest::MD5::md5_hex( rand(1024) );
 
-ProcessAttachments( ARGSRef => \%ARGS );
+ProcessAttachments( ARGSRef => \%ARGS, Token => $Token );
 
 $Page ||= 1;
 
@@ -358,7 +359,7 @@ unless ( $ARGS{'AddMoreAttach'} ) {
         @results = ( @results, @tempresults );
     }
 
-    delete $session{'Attachments'};
+    delete $session{'Attachments'}{ $Token };
 }
 
 my $TxnCFs = RT::CustomFields->new( $session{CurrentUser} );
@@ -367,6 +368,7 @@ $TxnCFs->LimitToGlobalOrObjectId( sort keys %queues );
 
 </%INIT>
 <%args>
+$Token => undef
 $Format => undef
 $Page => 1
 $Rows => undef

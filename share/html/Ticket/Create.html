@@ -54,6 +54,7 @@
 
 <form action="<% RT->Config->Get('WebPath') %>/Ticket/Create.html" method="post" enctype="multipart/form-data" name="TicketCreate">
   <input type="hidden" class="hidden" name="id" value="new" />
+  <input type="hidden" class="hidden" name="Token" value="<% $Token %>" />
   
 % $m->callback( CallbackName => 'FormStart', QueueObj => $QueueObj, ARGSRef => \%ARGS );
 
@@ -375,8 +376,9 @@ $QueueObj->Disabled && Abort(loc("Cannot create tickets in a disabled queue."));
 
 my $ticket = RT::Ticket->new($session{'CurrentUser'}); # empty ticket object
 
+$ARGS{'Token'} ||= $Token ||= Digest::MD5::md5_hex( rand(1024) );
 
-ProcessAttachments( ARGSRef => \%ARGS );
+ProcessAttachments( ARGSRef => \%ARGS, Token => $Token );
 
 my $checks_failure = 0;
 
@@ -443,6 +445,7 @@ PageMenu->child( details => raw_html =>  q[<a href="#details" onclick="return sw
 </%INIT>
 
 <%ARGS>
+$Token => undef
 $DependsOn => undef
 $DependedOnBy => undef
 $MemberOf => undef

@@ -193,8 +193,9 @@ $CanRespond = 1 if ( $t->CurrentUserHasRight('ReplyToTicket') or
 $CanComment = 1 if ( $t->CurrentUserHasRight('CommentOnTicket') or
                      $t->CurrentUserHasRight('ModifyTicket') ); 
 
+$ARGS{'Token'} ||= $Token ||= Digest::MD5::md5_hex( rand(1024) );
 
-ProcessAttachments( ARGSRef => \%ARGS );
+ProcessAttachments( ARGSRef => \%ARGS, Token => $Token );
 
 # check email addresses for RT's
 {
@@ -235,6 +236,7 @@ if ( !$checks_failure && !$skip_update && exists $ARGS{SubmitTicket} ) {
 
 <%ARGS>
 $id => undef
+$Token => ''
 $Action => 'Respond'
 $DefaultStatus => undef
 </%ARGS>
